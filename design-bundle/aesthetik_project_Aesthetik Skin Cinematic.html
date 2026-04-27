@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aesthetik Skin — Dermocosmética Coreana de Élite</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{heading:["'Instrument Serif'",`serif`],body:["'Barlow'",`sans-serif`]},borderRadius:{DEFAULT:'9999px'}}}};</script>
+<script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;}
+body{background:#000;margin:0;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.lg{background:rgba(255,255,255,0.015);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12);position:relative;overflow:hidden;}
+.lg::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(180deg,rgba(255,255,255,.45) 0%,rgba(255,255,255,.15) 20%,rgba(255,255,255,0) 40%,rgba(255,255,255,0) 60%,rgba(255,255,255,.15) 80%,rgba(255,255,255,.45) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
+.lgs{backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);background:rgba(255,255,255,0.03);box-shadow:4px 4px 4px rgba(0,0,0,.08),inset 0 1px 1px rgba(255,255,255,.18);position:relative;overflow:hidden;}
+.lgs::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(180deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,.2) 20%,rgba(255,255,255,0) 40%,rgba(255,255,255,0) 60%,rgba(255,255,255,.2) 80%,rgba(255,255,255,.5) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
+canvas.bg3d{position:absolute;inset:0;width:100%!important;height:100%!important;z-index:0;pointer-events:none;}
+@keyframes floatImg{0%,100%{transform:translateY(0) scale(1) rotateY(0deg)}50%{transform:translateY(-10px) scale(1.02) rotateY(3deg)}}
+@keyframes wordBlur{0%{opacity:0;filter:blur(10px);transform:translateY(40px)}50%{opacity:.5;filter:blur(5px);transform:translateY(-4px)}100%{opacity:1;filter:blur(0);transform:none}}
+.word{display:inline-block;margin-right:.22em;opacity:0;}
+.word.go{animation:wordBlur .7s ease-out forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.fu{opacity:0;}.fu.go{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) forwards;}
+.pcard{transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s,border-color .4s;cursor:pointer;transform-style:preserve-3d;}
+.pcard:hover{transform:translateY(-8px) rotateX(2deg);}
+.prod-img{transition:transform .5s cubic-bezier(.16,1,.3,1),filter .5s;transform-style:preserve-3d;}
+.pcard:hover .prod-img{transform:translateY(-12px) scale(1.04) rotateY(-4deg);filter:drop-shadow(0 24px 40px rgba(0,0,0,.7));}
+.tab-btn{transition:all .3s;border-bottom:2px solid transparent;padding:10px 20px;color:rgba(255,255,255,.4);font-family:'Barlow',sans-serif;font-size:12px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;}
+.tab-btn.active{color:#00d4e8;border-bottom-color:#00d4e8;}
+.tab-btn:hover:not(.active){color:rgba(255,255,255,.7);}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.vis{opacity:1;transform:none;}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useRef,useEffect,useState,useCallback}=React;
+
+/* ── Aqua palette ── */
+const AQ1=0x00d4e8,AQ2=0x4ecdc4,AQ3=0x00b4d8,AQ4=0x0077b6,AQ5=0x7fe8f0;
+
+/* ── Three helpers ── */
+function buildMolecularScene(renderer,scene,camera,el){
+  const T=window.THREE;
+  camera.position.z=30;
+  scene.add(new T.AmbientLight(AQ1,.4));
+  const dl=new T.DirectionalLight(AQ1,1.5);dl.position.set(6,10,8);scene.add(dl);
+  const dl2=new T.DirectionalLight(AQ3,.6);dl2.position.set(-8,-5,4);scene.add(dl2);
+  const grp=new T.Group();scene.add(grp);
+  const SIZES=[.12,.18,.28,.38,.5];
+  const pts=[];
+  for(let i=0;i<50;i++){
+    const sz=SIZES[Math.floor(Math.random()*SIZES.length)];
+    const mat=new T.MeshPhysicalMaterial({color:new T.Color(AQ1),transparent:true,opacity:.15+Math.random()*.18,roughness:0,metalness:0,transmission:.85,thickness:.5,emissive:new T.Color(AQ2),emissiveIntensity:.14});
+    const m=new T.Mesh(new T.SphereGeometry(sz,20,20),mat);
+    const r=5+Math.random()*10,th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);
+    m.position.set(r*Math.sin(ph)*Math.cos(th),r*Math.sin(ph)*Math.sin(th),r*Math.cos(ph));
+    m.userData={baseY:m.position.y,speed:.4+Math.random()*.6,phase:Math.random()*Math.PI*2};
+    pts.push(m.position.clone());grp.add(m);
+  }
+  const lm=new T.LineBasicMaterial({color:AQ1,transparent:true,opacity:.09});
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++)
+    if(pts[i].distanceTo(pts[j])<5.2){grp.add(new T.Line(new T.BufferGeometry().setFromPoints([pts[i],pts[j]]),lm));}
+  const addT=(r,tube,col,rx,ry,op)=>{
+    const m=new T.Mesh(new T.TorusGeometry(r,tube,16,100),new T.MeshPhysicalMaterial({color:col,transparent:true,opacity:op,roughness:0,transmission:.6,emissive:new T.Color(col),emissiveIntensity:.15}));
+    m.rotation.set(rx,ry,0);grp.add(m);return m;
+  };
+  const t1=addT(5,.05,AQ1,Math.PI/3,.2,.35);
+  const t2=addT(8,.03,AQ3,Math.PI/6,Math.PI/4,.2);
+  const t3=addT(3.5,.04,AQ2,.9,.5,.28);
+  const pa=new Float32Array(400*3);for(let i=0;i<pa.length;i++)pa[i]=(Math.random()-.5)*60;
+  scene.add(new T.Points(new T.BufferGeometry().setAttribute('position',new T.BufferAttribute(pa,3)),new T.PointsMaterial({color:AQ5,size:.07,transparent:true,opacity:.4})));
+  let raf,tick=0;
+  const mouse={x:0,y:0};
+  const om=e=>{mouse.x=(e.clientX/window.innerWidth-.5)*.6;mouse.y=(e.clientY/window.innerHeight-.5)*-.4;};
+  window.addEventListener('mousemove',om);
+  const animate=()=>{raf=requestAnimationFrame(animate);tick+=.004;
+    grp.rotation.y=tick*.14+mouse.x;grp.rotation.x=tick*.06+mouse.y;
+    t1.rotation.z=tick*.2;t2.rotation.z=-tick*.12;t3.rotation.z=tick*.16;
+    grp.children.forEach(c=>{if(c.userData?.baseY!=null){c.position.y=c.userData.baseY+Math.sin(tick*c.userData.speed+c.userData.phase)*.5;}});
+    renderer.render(scene,camera);};
+  animate();
+  return()=>{cancelAnimationFrame(raf);window.removeEventListener('mousemove',om);};
+}
+
+function buildDNAScene(renderer,scene,camera){
+  const T=window.THREE;
+  camera.position.z=22;
+  scene.add(new T.AmbientLight(AQ2,.35));
+  const dl=new T.DirectionalLight(AQ1,1.8);dl.position.set(8,8,6);scene.add(dl);
+  const dl2=new T.DirectionalLight(AQ3,.6);dl2.position.set(-6,-4,3);scene.add(dl2);
+  const hg=new T.Group();
+  const sGeo=new T.SphereGeometry(.14,14,14);
+  const STEPS=70;
+  for(let i=0;i<STEPS;i++){
+    const t=(i/STEPS)*Math.PI*7,y=(i/STEPS)*28-14,col=[AQ1,AQ2,AQ3,AQ4,AQ5][i%5];
+    const bmat=new T.MeshPhysicalMaterial({color:col,transparent:true,opacity:.7,roughness:0,transmission:.5,emissive:new T.Color(col),emissiveIntensity:.12});
+    const m1=new T.Mesh(sGeo,bmat);m1.position.set(Math.cos(t)*3.5,y,Math.sin(t)*1.8);hg.add(m1);
+    const m2=new T.Mesh(sGeo,bmat.clone());m2.material.opacity=.4;
+    m2.position.set(Math.cos(t+Math.PI)*3.5,y,Math.sin(t+Math.PI)*1.8);hg.add(m2);
+    if(i%4===0){
+      const mid=m1.position.clone().lerp(m2.position,.5),dist=m1.position.distanceTo(m2.position);
+      const rung=new T.Mesh(new T.CylinderGeometry(.025,.025,dist,8),new T.MeshPhysicalMaterial({color:AQ1,transparent:true,opacity:.2,roughness:0,transmission:.7}));
+      rung.position.copy(mid);rung.lookAt(m2.position);rung.rotateX(Math.PI/2);hg.add(rung);
+    }
+  }
+  hg.position.set(11,0,-4);hg.scale.setScalar(.72);scene.add(hg);
+  [[4,.04,AQ1,[-9,3,-2],.5,.3],[2.8,.035,AQ2,[-7,-5,-1],.8,.2],[7,.025,AQ3,[5,5,-10],.3,.6]].forEach(([r,tube,col,pos,rx,ry])=>{
+    const m=new T.Mesh(new T.TorusGeometry(r,tube,14,90),new T.MeshPhysicalMaterial({color:col,transparent:true,opacity:.28,roughness:0,transmission:.6,emissive:new T.Color(col),emissiveIntensity:.12}));
+    m.position.set(...pos);m.rotation.set(rx,ry,0);m.userData={rx,ry};scene.add(m);
+  });
+  const pa=new Float32Array(500*3);for(let i=0;i<pa.length;i++)pa[i]=(Math.random()-.5)*65;
+  scene.add(new T.Points(new T.BufferGeometry().setAttribute('position',new T.BufferAttribute(pa,3)),new T.PointsMaterial({color:AQ5,size:.06,transparent:true,opacity:.28})));
+  let raf,tick=0;
+  const animate=()=>{raf=requestAnimationFrame(animate);tick+=.004;
+    hg.rotation.y=tick*.25;
+    scene.children.forEach(c=>{if(c.userData?.rx!=null){c.rotation.z=tick*.08;c.rotation.x=c.userData.rx+Math.sin(tick*.4)*.08;}});
+    renderer.render(scene,camera);};
+  animate();
+  return()=>cancelAnimationFrame(raf);
+}
+
+function buildCrystalsScene(renderer,scene,camera){
+  const T=window.THREE;
+  camera.position.z=20;
+  scene.add(new T.AmbientLight(AQ2,.4));
+  const dl=new T.DirectionalLight(AQ1,2);dl.position.set(8,10,6);scene.add(dl);
+  const dl2=new T.DirectionalLight(AQ3,.8);dl2.position.set(-8,-6,4);scene.add(dl2);
+  const all=[];
+  [[.4,18],[.7,10],[1.1,6],[1.8,4]].forEach(([r,n])=>{
+    for(let i=0;i<n;i++){
+      const mat=new T.MeshPhysicalMaterial({color:new T.Color(AQ1),transparent:true,opacity:.1+Math.random()*.2,roughness:0,transmission:.88,thickness:.6,emissive:new T.Color(AQ2),emissiveIntensity:.15});
+      const m=new T.Mesh(Math.random()>.5?new T.IcosahedronGeometry(r,0):new T.OctahedronGeometry(r),mat);
+      m.position.set((Math.random()-.5)*28,(Math.random()-.5)*18,(Math.random()-.5)*12);
+      m.userData={rx:.01+Math.random()*.015,ry:.008+Math.random()*.012,rz:Math.random()*.01};
+      scene.add(m);all.push(m);
+    }
+  });
+  [[5,.06,AQ1,Math.PI/4,.3],[9,.04,AQ3,.6,Math.PI/5],[3,.05,AQ2,1.2,.8]].forEach(([r,t,c,rx,ry],i)=>{
+    const m=new T.Mesh(new T.TorusGeometry(r,t,16,80),new T.MeshPhysicalMaterial({color:c,transparent:true,opacity:.32,roughness:0,transmission:.5,emissive:new T.Color(c),emissiveIntensity:.18}));
+    m.rotation.set(rx,ry,0);m.userData={rx,ry,spin:i};
+    scene.add(m);all.push(m);
+  });
+  const pa=new Float32Array(400*3);for(let i=0;i<pa.length;i++)pa[i]=(Math.random()-.5)*50;
+  scene.add(new T.Points(new T.BufferGeometry().setAttribute('position',new T.BufferAttribute(pa,3)),new T.PointsMaterial({color:AQ5,size:.06,transparent:true,opacity:.28})));
+  let raf,tick=0;
+  const animate=()=>{raf=requestAnimationFrame(animate);tick+=.005;
+    all.forEach(c=>{c.rotation.x+=c.userData.rx||.005;c.rotation.y+=c.userData.ry||.008;c.rotation.z+=c.userData.rz||0;});
+    renderer.render(scene,camera);};
+  animate();
+  return()=>cancelAnimationFrame(raf);
+}
+
+function buildWaveScene(renderer,scene,camera){
+  const T=window.THREE;
+  camera.position.z=16;
+  scene.add(new T.AmbientLight(AQ3,.5));
+  const dl=new T.DirectionalLight(AQ1,1.8);dl.position.set(0,10,8);scene.add(dl);
+  const COLS=50,ROWS=30;
+  const ptsArr=[],cols=[];
+  const cA=new T.Color(AQ1),cB=new T.Color(AQ2),cC=new T.Color(AQ5);
+  for(let i=0;i<COLS;i++)for(let j=0;j<ROWS;j++){
+    ptsArr.push((i-COLS/2)*.7,(j-ROWS/2)*.7,0);
+    const c=Math.random()<.4?cA:Math.random()<.5?cB:cC;
+    cols.push(c.r,c.g,c.b);
+  }
+  const geo=new T.BufferGeometry();
+  geo.setAttribute('position',new T.BufferAttribute(new Float32Array(ptsArr),3));
+  geo.setAttribute('color',new T.BufferAttribute(new Float32Array(cols),3));
+  const posArr=geo.attributes.position.array;
+  scene.add(new T.Points(geo,new T.PointsMaterial({size:.12,transparent:true,opacity:.5,vertexColors:true})));
+  const bubbles=[];
+  for(let i=0;i<25;i++){
+    const r=.1+Math.random()*.55;
+    const m=new T.Mesh(new T.SphereGeometry(r,18,18),new T.MeshPhysicalMaterial({color:AQ1,transparent:true,opacity:.08+Math.random()*.14,roughness:0,transmission:.9,emissive:new T.Color(AQ2),emissiveIntensity:.18}));
+    m.position.set((Math.random()-.5)*22,(Math.random()-.5)*15,(Math.random()-.5)*5);
+    m.userData={vy:.2+Math.random()*.4};
+    scene.add(m);bubbles.push(m);
+  }
+  let raf,tick=0;
+  const animate=()=>{raf=requestAnimationFrame(animate);tick+=.012;
+    for(let i=0;i<COLS*ROWS;i++){const x=posArr[i*3],y=posArr[i*3+1];posArr[i*3+2]=Math.sin(x*.4+tick)*1.2+Math.cos(y*.3+tick*.7)*.8;}
+    geo.attributes.position.needsUpdate=true;
+    bubbles.forEach(b=>{b.position.y+=b.userData.vy*.018;if(b.position.y>10)b.position.y=-10;});
+    renderer.render(scene,camera);};
+  animate();
+  return()=>cancelAnimationFrame(raf);
+}
+
+function ThreeBg({type='molecular'}){
+  const ref=useRef(null);
+  useEffect(()=>{
+    const el=ref.current;if(!el||!window.THREE)return;
+    const T=window.THREE;
+    const W=el.offsetWidth,H=el.offsetHeight;
+    const renderer=new T.WebGLRenderer({antialias:true,alpha:true});
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(W,H);
+    renderer.setClearColor(0x000000,0);renderer.domElement.className='bg3d';
+    el.appendChild(renderer.domElement);
+    const scene=new T.Scene();
+    const camera=new T.PerspectiveCamera(55,W/H,.1,200);
+    const builders={molecular:buildMolecularScene,dna:buildDNAScene,crystals:buildCrystalsScene,wave:buildWaveScene};
+    const cleanup=(builders[type]||buildMolecularScene)(renderer,scene,camera,el);
+    const onResize=()=>{const nw=el.offsetWidth,nh=el.offsetHeight;camera.aspect=nw/nh;camera.updateProjectionMatrix();renderer.setSize(nw,nh);};
+    window.addEventListener('resize',onResize);
+    return()=>{cleanup?.();window.removeEventListener('resize',onResize);renderer.dispose();el.contains(renderer.domElement)&&el.removeChild(renderer.domElement);};
+  },[type]);
+  return <div ref={ref} style={{position:'absolute',inset:0,zIndex:0}}/>;
+}
+
+/* ── Icons ── */
+const AUR=({s=16})=><svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>;
+const WAIcon=({s=15})=><svg width={s} height={s} viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.524 5.845L.057 23.214a.5.5 0 00.6.63l5.498-1.43A11.938 11.938 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>;
+
+/* ── BlurText ── */
+function BlurText({text,className}){
+  const ref=useRef(null);const[go,setGo]=useState(false);
+  useEffect(()=>{const obs=new IntersectionObserver(([e])=>{if(e.isIntersecting){setGo(true);obs.disconnect();}},{threshold:.1});if(ref.current)obs.observe(ref.current);return()=>obs.disconnect();},[]);
+  return(
+    <p ref={ref} className={className} style={{display:'flex',flexWrap:'wrap',justifyContent:'center',rowGap:'.1em'}}>
+      {text.split(' ').map((w,i)=><span key={i} className={'word'+(go?' go':'')} style={{animationDelay:go?`${.3+i*.1}s`:'9999s'}}>{w}</span>)}
+    </p>
+  );
+}
+
+/* ── useReveal ── */
+function useReveal(delay=0){
+  const ref=useRef(null);
+  useEffect(()=>{
+    const obs=new IntersectionObserver(([e])=>{if(e.isIntersecting){setTimeout(()=>{if(ref.current)ref.current.classList.add('vis');},delay);obs.disconnect();}},{threshold:.1});
+    if(ref.current)obs.observe(ref.current);return()=>obs.disconnect();
+  },[delay]);
+  return ref;
+}
+
+/* ── Navbar ── */
+function Navbar(){
+  const[sc,setSc]=useState(false);
+  useEffect(()=>{const fn=()=>setSc(window.scrollY>60);window.addEventListener('scroll',fn);return()=>window.removeEventListener('scroll',fn);},[]);
+  return(
+    <nav className="fixed top-4 left-0 right-0 z-50 flex items-center justify-between px-8 lg:px-14" style={{transition:'all .5s'}}>
+      <div className="lg rounded-full flex items-center gap-2 px-3 py-2">
+        <div className="lg w-7 h-7 rounded-full flex items-center justify-center"><span className="font-heading italic text-white text-xs">as</span></div>
+        <div className="hidden md:block">
+          <div className="text-white text-[11px] font-body font-medium tracking-[.15em] uppercase">Aesthetik Skin</div>
+          <div className="text-white/40 text-[8px] font-body tracking-[.18em] uppercase">Dermocosmética Coreana</div>
+        </div>
+      </div>
+      <div className="hidden md:flex items-center lg rounded-full px-1.5 py-1.5 gap-1">
+        {['Nosotros','Productos','Certificaciones','Contacto'].map(l=>(
+          <a key={l} href="#" className="px-3 py-2 text-xs font-medium text-white/75 font-body hover:text-white transition-colors whitespace-nowrap tracking-wide">{l}</a>
+        ))}
+        <button className="bg-white text-black px-4 py-2 rounded-full text-xs font-semibold font-body flex items-center gap-1.5 whitespace-nowrap ml-1">Cotizar <AUR s={11}/></button>
+      </div>
+      <div className="w-10"/>
+    </nav>
+  );
+}
+
+/* ── Hero ── */
+function Hero(){
+  return(
+    <section className="relative w-full overflow-hidden bg-black flex flex-col" style={{minHeight:'100vh'}}>
+      <ThreeBg type="molecular"/>
+      <div style={{position:'absolute',inset:0,zIndex:1,background:'radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(0,0,0,.7) 100%)',pointerEvents:'none'}}/>
+      <div style={{position:'absolute',inset:0,zIndex:1,background:'rgba(0,0,0,.3)',pointerEvents:'none'}}/>
+      <div className="relative flex flex-col h-full" style={{zIndex:2}}>
+        <Navbar/>
+        <div className="flex-1 flex flex-col items-center justify-center pt-28 px-4 text-center pb-10">
+          <div className="fu go flex items-center gap-2 lg rounded-full px-1.5 py-1.5 mb-8" style={{animationDelay:'.2s'}}>
+            <span className="bg-white text-black px-3 py-1 rounded-full text-xs font-semibold font-body">Nuevo</span>
+            <span className="text-sm text-white/90 font-body pr-3">Distribución autorizada Voltena &amp; Nabota · México 2025</span>
+          </div>
+          <BlurText text="Dermocosmética Coreana de Élite en México" className="text-6xl md:text-7xl lg:text-[5.5rem] font-heading italic text-white leading-[.85] max-w-3xl tracking-[-3px] mb-5"/>
+          <p className="fu go text-sm md:text-base text-white/65 max-w-lg font-body font-light leading-relaxed mb-7" style={{animationDelay:'.6s'}}>
+            Distribuidores autorizados de <strong className="text-white font-medium">Voltena</strong> y <strong className="text-white font-medium">Nabota</strong> — y una línea completa de productos coreanos de élite para médicos estéticos, dermatólogos y clínicas de alta exigencia en México y Latinoamérica.
+          </p>
+          <div className="fu go flex items-center gap-5 mb-10" style={{animationDelay:'.8s'}}>
+            <button className="lgs rounded-full px-6 py-3 text-sm font-medium text-white font-body flex items-center gap-2"><WAIcon/> Cotizar por WhatsApp</button>
+            <button className="text-white/70 text-sm font-body flex items-center gap-2 hover:text-white transition-colors">Ver Catálogo <AUR s={14}/></button>
+          </div>
+          <div className="fu go flex items-stretch gap-4" style={{animationDelay:'1s'}}>
+            {[
+              {icon:<svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="w-7 h-7"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,v:'100%',l:'Productos originales certificados'},
+              {icon:<svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="w-7 h-7"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>,v:'14+',l:'Marcas y productos disponibles'},
+            ].map((s,i)=>(
+              <div key={i} className="lg p-5 w-[200px] rounded-[1.25rem] flex flex-col gap-3">
+                {s.icon}
+                <div>
+                  <div className="font-heading italic text-white text-4xl tracking-[-1px] leading-none">{s.v}</div>
+                  <div className="text-xs text-white/55 font-body font-light mt-1.5">{s.l}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="fu go flex flex-col items-center gap-3 pb-8" style={{animationDelay:'1.2s',zIndex:2}}>
+          <div className="lg rounded-full px-4 py-1 text-xs font-medium text-white/50 font-body tracking-wider">Disponible en</div>
+          <div className="flex items-center gap-8 md:gap-14 flex-wrap justify-center px-8">
+            {['México','Estados Unidos','Canadá','Latinoamérica'].map(n=>(
+              <span key={n} className="font-heading italic text-white/85 text-2xl md:text-3xl tracking-tight">{n}</span>
+            ))}
+          </div>
+          <div className="flex items-center gap-6 flex-wrap justify-center px-8 mt-1">
+            {['MFDS','FDA','CE Marking','Made in Korea'].map(n=>(
+              <span key={n} className="font-body text-white/30 text-[10px] tracking-widest uppercase">{n}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Product data ── */
+const CATS=[
+  {
+    id:'toxinas',label:'Toxinas Botulínicas',
+    products:[
+      {name:'Nabota',sub:'100u · 200u',color:'#5a9e78',img:'uploads/nabota.jpg',cert:'MFDS · FDA · CE',fab:'Daewoong',tags:['Pureza 98.7%','Larga duración','Neurotoxina pura','Resultados naturales'],body:'Conocida por su rápida acción y alta pureza. Diseñada para reducir arrugas y líneas de expresión. Resultados visibles a los 2-3 días del tratamiento.'},
+      {name:'Innotox',sub:'100u · Líquida lista para usar',color:'#c4822a',img:'uploads/Innotox.jpg',cert:'MFDS',fab:'Medytox Inc.',tags:['Sin dilución','Sin albúmina animal','T. Ambiente','36 meses vida útil'],body:'Primera toxina botulínica tipo A del mundo en formato líquido lista para usar. Sin albúmina sérica humana, reduciendo riesgo de reacciones alérgicas.'},
+      {name:'Liztox',sub:'100u · Toxina tipo A',color:'#7c6bbd',img:'uploads/listox.jpg',cert:'MFDS · KFDA',fab:'Huons Biopharma',tags:['Pureza 99.8%','2-8°C','Alta precisión','36 meses'],body:'Toxina botulínica tipo A de altísima pureza. Ideal para corrección y prevención de arrugas mímicas. Aprobada para líneas glabelares y patas de gallo.'},
+    ]
+  },
+  {
+    id:'voltena',label:'Voltena',
+    products:[
+      {name:'Voltena No.1',sub:'10ml × 6 viales · Suero contorno',color:'#c4822a',img:'uploads/voltena1.JPG',cert:'Made in Korea',fab:'Corea del Sur',tags:['Disuelve grasa','Sin cicatrices','Facial & corporal','Lipo-contouring'],body:'Suero para el contorno facial y corporal formulado con ingredientes naturales para disolver la grasa localizada. Alternativa segura y sin cicatrices.'},
+      {name:'Voltena No.2',sub:'60cc · Body Filler',color:'#7c6bbd',img:'uploads/voltena2.jpg',cert:'Made in Korea',fab:'Corea del Sur',tags:['HA corporal','No quirúrgico','Gran volumen','Contorneo'],body:'Relleno corporal de ácido hialurónico diseñado para mejorar el volumen y contornear áreas grandes del cuerpo de forma no quirúrgica.'},
+      {name:'Voltena No.3',sub:'300g · Gel reductor frío',color:'#4a90b8',img:'uploads/voltena3.JPG',cert:'Made in Korea',fab:'Corea del Sur',tags:['17 aminoácidos','Anticelulítico','Gel frío','Lipo-reducción'],body:'Gel reductor con 17 aminoácidos incluyendo treonina y metionina. Reafirma la piel y es eficaz contra la grasa y celulitis.'},
+    ]
+  },
+  {
+    id:'rellenos',label:'Rellenos Dérmicos',
+    products:[
+      {name:'Dermalax',sub:'1.1ml · Deep Plus · Implant',color:'#e8a87c',img:'uploads/Dermalax.jpg',cert:'CE · FDA',fab:'Corea del Sur',tags:['HA 24mg/ml','Lidocaína 0.3%','Pliegues profundos','Aumento labios'],body:'HA de alta pureza con lidocaína para mayor comodidad. Ideal para eliminación de pliegues nasolabiales, aumento de labios y remodelación facial.'},
+      {name:'Elasty',sub:'1ml × 2syr · F/D/G Plus',color:'#9eb8d8',img:'uploads/Elasty.jpg',cert:'CE',fab:'Corea del Sur',tags:['Reticulación 3D','No animal','Alta volumetría','Biodegradación resistente'],body:'Tecnología de reticulación 3D con altas propiedades volumétricas. HA de origen no animal, minimizando reacciones alérgicas. 3 densidades disponibles.'},
+      {name:'Juvéderm',sub:'1ml × 2syr · Volbella/Volift/Voluma',color:'#a87cb8',img:'uploads/juvederm.jpg',cert:'CE · FDA',fab:'Allergan',tags:['VYCROSS tech','Volbella','Voluma','Volux'],body:'La línea de rellenos más reconocida mundialmente. Tecnología VYCROSS para resultados naturales y duraderos en labios, mejillas y contorno facial.'},
+      {name:'Revolax',sub:'1.1ml · Fine/Deep/Sub-Q',color:'#78b896',img:'uploads/Revolax.jpg',cert:'CE · MFDS',fab:'Corea del Sur',tags:['HA alta pureza','Bajo rechazo','12-18 meses','Moldeable'],body:'Relleno de HA de alta pureza con mínimo riesgo de rechazo. Tres densidades para arrugas superficiales, labios, pómulos y contorno mandibular.'},
+    ]
+  },
+  {
+    id:'meso',label:'Mesoterapia & Otros',
+    products:[
+      {name:'Eyebella',sub:'2ml · Polynucleotide 1%',color:'#d4a0a0',img:'uploads/eyebella.jpg',cert:'CE',fab:'Corea del Sur',tags:['ADN de salmón','Área periorbital','Ojeras','Regeneración celular'],body:'Formulado con polinucleótidos derivados del ADN de salmón. Diseñado para la revitalización del área periorbital. Mejora ojeras y regenera la piel.'},
+      {name:'Hyaron',sub:'10 jeringas · Sodium HA 25mg/2.5ml',color:'#88b8d8',img:'uploads/hyaron.jpg',cert:'MFDS · FDA',fab:'Dongkook Pharma',tags:['Skinbooster','Colágeno & elastina','Micro-inyecciones','Hidratación profunda'],body:'Skinbooster de hialuronato de sodio que proporciona hidratación intensa. Estimula colágeno y elastina. Compatible con Hyaluron Pen y dermarollers.'},
+      {name:'Muchcaine',sub:'500g · Crema anestésica',color:'#d4d488',img:'uploads/muchcaine.jpg',cert:'Certificado',fab:'Internacional',tags:['Lidocaína 10.56%','Tópica','Pre-procedimiento','Acción rápida'],body:'Crema anestésica tópica a base de lidocaína para adormecer la piel antes de procedimientos estéticos como inyecciones, microneedling o láser.'},
+      {name:'Liporase',sub:'10 viales · Hialuronidasa',color:'#b8c4a0',img:'uploads/liporase.jpg',cert:'Certificado',fab:'DnewPharm',tags:['Disuelve HA','Corrección rellenos','Enzima natural','Emergencias'],body:'Hialuronidasa que disuelve el ácido hialurónico sintético. Esencial para corregir resultados no deseados de rellenos dérmicos o exceso de producto.'},
+    ]
+  },
+];
+
+/* ── ProductCard ── */
+function ProductCard({p,i,accent}){
+  const[hov,setHov]=useState(false);
+  const ref=useRef(null);
+  const[vis,setVis]=useState(false);
+  useEffect(()=>{
+    const obs=new IntersectionObserver(([e])=>{if(e.isIntersecting){setTimeout(()=>setVis(true),i*110);obs.disconnect();}},{threshold:.07});
+    if(ref.current)obs.observe(ref.current);return()=>obs.disconnect();
+  },[i]);
+
+  // 3D tilt on mousemove
+  const onMouseMove=useCallback(e=>{
+    const card=ref.current;if(!card)return;
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`translateY(-8px) rotateX(${-y*10}deg) rotateY(${x*10}deg)`;
+  },[]);
+  const onMouseLeave=useCallback(()=>{if(ref.current)ref.current.style.transform='';setHov(false);},[]);
+
+  return(
+    <div ref={ref} className="pcard lg rounded-[1.5rem] flex flex-col overflow-hidden"
+      style={{opacity:vis?1:0,translate:vis?'0 0':'0 32px',transition:'opacity .6s ease, translate .6s ease, transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s, border-color .3s',border:`1px solid ${hov?p.color+'50':'rgba(255,255,255,0.07)'}`,boxShadow:hov?`0 28px 70px ${p.color}20`:'none',transformStyle:'preserve-3d',minHeight:480}}
+      onMouseEnter={()=>setHov(true)}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}>
+
+      {/* Image */}
+      <div style={{padding:'24px 24px 0',perspective:800}}>
+        <div className="prod-img" style={{borderRadius:12,overflow:'hidden',background:`linear-gradient(135deg,${p.color}15,${p.color}08)`,boxShadow:hov?`0 20px 50px rgba(0,0,0,.7)`:'0 8px 24px rgba(0,0,0,.4)',animation:hov?'none':'floatImg 4s ease-in-out infinite',animationDelay:`${i*.5}s`}}>
+          <img src={p.img} alt={p.name} style={{width:'100%',height:200,objectFit:'cover',display:'block',borderRadius:10}}/>
+        </div>
+      </div>
+
+      {/* Tags */}
+      <div style={{display:'flex',flexWrap:'wrap',gap:6,padding:'16px 20px 0'}}>
+        {p.tags.map(t=><span key={t} className="lg rounded-full text-[10px] text-white/65 font-body whitespace-nowrap" style={{padding:'3px 10px'}}>{t}</span>)}
+      </div>
+
+      <div style={{flex:1}}/>
+
+      {/* Info */}
+      <div style={{padding:'16px 22px 22px',borderTop:`1px solid ${p.color}20`,marginTop:16}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+          <span className="font-body text-[9px] tracking-[.2em] uppercase" style={{color:p.color}}>{p.cert}</span>
+          <span className="font-body text-[9px] text-white/30 tracking-wide">{p.fab}</span>
+        </div>
+        <div style={{width:hov?40:18,height:2,background:p.color,marginBottom:10,transition:'width .4s'}}/>
+        <h3 className="font-heading italic text-white leading-none tracking-[-1px]" style={{fontSize:28}}>{p.name}</h3>
+        <p className="font-body text-white/40 text-[10px] tracking-widest uppercase mt-1">{p.sub}</p>
+        <p className="font-body text-white/60 text-xs leading-snug mt-3" style={{maxWidth:'30ch'}}>{p.body}</p>
+        <div style={{display:'flex',alignItems:'center',gap:6,marginTop:14,color:p.color,fontSize:11,opacity:hov?1:0,transform:hov?'none':'translateY(4px)',transition:'all .3s',fontFamily:'Barlow,sans-serif'}}>
+          Cotizar ahora <AUR s={11}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Products section ── */
+function Products(){
+  const[tab,setTab]=useState('toxinas');
+  const hRef=useReveal(0);
+  const cat=CATS.find(c=>c.id===tab);
+
+  return(
+    <section className="relative bg-black overflow-hidden" style={{minHeight:'100vh',paddingBottom:80}}>
+      <ThreeBg type="dna"/>
+      <div style={{position:'absolute',inset:0,zIndex:1,background:'rgba(0,0,0,.6)',pointerEvents:'none'}}/>
+
+      <div className="relative px-8 md:px-16 lg:px-20 pt-24" style={{zIndex:2}}>
+        {/* Header */}
+        <div ref={hRef} className="reveal" style={{marginBottom:48}}>
+          <p className="text-xs font-body text-white/35 mb-4 tracking-[.3em] uppercase">// Portafolio completo</p>
+          <div className="flex items-end justify-between flex-wrap gap-6">
+            <h2 className="font-heading italic text-white leading-[.9] tracking-[-3px]" style={{fontSize:'clamp(48px,6vw,96px)'}}>
+              Ciencia<br/>coreana
+            </h2>
+            <p className="text-sm text-white/35 font-body font-light leading-relaxed max-w-xs text-right">
+              14 productos importados directamente desde laboratorios certificados en Corea del Sur.
+            </p>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div style={{borderBottom:'1px solid rgba(255,255,255,0.08)',marginBottom:40,display:'flex',gap:0,overflowX:'auto'}}>
+          {CATS.map(c=>(
+            <button key={c.id} className={`tab-btn${tab===c.id?' active':''}`} onClick={()=>setTab(c.id)}>{c.label}</button>
+          ))}
+        </div>
+
+        {/* Grid */}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:20}}>
+          {cat.products.map((p,i)=><ProductCard key={p.name} p={p} i={i} accent={p.color}/>)}
+        </div>
+
+        {/* CTA strip */}
+        <div className="flex items-center justify-between mt-12 pt-8" style={{borderTop:'1px solid rgba(255,255,255,.06)'}}>
+          <p className="text-xs text-white/25 font-body font-light">Cadena de frío garantizada · Importación directa · Soporte técnico profesional</p>
+          <button className="lgs rounded-full px-6 py-3 text-xs font-medium text-white font-body flex items-center gap-2 ml-8 whitespace-nowrap">
+            <WAIcon s={13}/> Solicitar cotización completa
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Why Us ── */
+function WhyUs(){
+  const ref=useReveal(0);
+  const r1=useReveal(0),r2=useReveal(100),r3=useReveal(200);
+  return(
+    <section className="relative bg-black overflow-hidden" style={{padding:'120px 64px'}}>
+      <ThreeBg type="crystals"/>
+      <div style={{position:'absolute',inset:0,zIndex:1,background:'rgba(0,0,0,.72)',pointerEvents:'none'}}/>
+      <div ref={ref} className="reveal" style={{maxWidth:1200,margin:'0 auto',position:'relative',zIndex:2}}>
+        <div style={{textAlign:'center',marginBottom:64}}>
+          <p className="text-xs font-body text-white/35 mb-5 tracking-[.3em] uppercase">// Por qué elegirnos</p>
+          <h2 className="font-heading italic text-white leading-[.9] tracking-[-3px]" style={{fontSize:'clamp(40px,5vw,72px)'}}>El estándar más alto</h2>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20}}>
+          {[
+            [r1,'Distribución directa','Importación directa desde laboratorios coreanos certificados, sin intermediarios.'],
+            [r2,'Cadena de frío','Control térmico garantizado desde el laboratorio de origen hasta tu clínica.'],
+            [r3,'Soporte técnico','Asesoría profesional sobre protocolos, dosificación y mejores prácticas de aplicación.'],
+          ].map(([rref,title,body],i)=>(
+            <div key={title} ref={rref} className="reveal lg rounded-[1.25rem] p-8">
+              <div className="font-heading italic text-[#c4a96a] text-xl mb-4">0{i+1}</div>
+              <h3 className="font-heading italic text-white text-2xl tracking-tight mb-3">{title}</h3>
+              <p className="text-sm text-white/45 font-body font-light leading-relaxed">{body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── CTA ── */
+function CtaFinal(){
+  const ref=useReveal(0);
+  return(
+    <section className="relative bg-black overflow-hidden" style={{padding:'140px 48px'}}>
+      <ThreeBg type="wave"/>
+      <div style={{position:'absolute',inset:0,zIndex:1,background:'rgba(0,0,0,.78)',pointerEvents:'none'}}/>
+      <div ref={ref} className="reveal" style={{maxWidth:640,margin:'0 auto',textAlign:'center',position:'relative',zIndex:2}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:14,marginBottom:32}}>
+          <div style={{width:28,height:1,background:'#c4a96a'}}/><span className="text-xs font-body text-white/35 tracking-[.25em] uppercase">Distribución autorizada</span><div style={{width:28,height:1,background:'#c4a96a'}}/>
+        </div>
+        <h2 className="font-heading italic text-white leading-[.9] tracking-[-3px] mb-6" style={{fontSize:'clamp(44px,5.5vw,80px)'}}>¿Lista tu clínica para el<br/><span style={{color:'#c4a96a'}}>siguiente nivel?</span></h2>
+        <p className="text-sm text-white/40 font-body font-light leading-relaxed mb-10">Contáctanos para cotizar productos originales certificados. Atención directa para profesionales de la salud estética.</p>
+        <div style={{display:'flex',gap:14,justifyContent:'center',flexWrap:'wrap'}}>
+          <button className="lgs rounded-full font-body font-medium text-white flex items-center gap-2" style={{padding:'15px 36px',fontSize:13}}><WAIcon/> Cotizar por WhatsApp</button>
+          <button className="font-body text-white/55 flex items-center gap-2 hover:text-white transition-colors" style={{background:'transparent',border:'1px solid rgba(255,255,255,.1)',borderRadius:9999,padding:'15px 36px',fontSize:13,cursor:'pointer'}}>Ver Catálogo <AUR/></button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Footer ── */
+function Footer(){
+  return(
+    <footer style={{background:'#050504',borderTop:'1px solid rgba(255,255,255,.05)',padding:'36px 64px'}}>
+      <div style={{maxWidth:1200,margin:'0 auto',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:16}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div className="lg w-7 h-7 rounded-full flex items-center justify-center"><span className="font-heading italic text-white text-xs">as</span></div>
+          <div><div className="text-white text-[11px] font-body font-medium tracking-widest uppercase">Aesthetik Skin</div><div className="text-white/25 text-[8px] font-body tracking-widest">Dermocosmética Coreana · México</div></div>
+        </div>
+        <div className="text-white/20 text-xs font-body">© 2025 Aesthetik Skin</div>
+        <div style={{display:'flex',gap:20}}>{['Privacidad','Términos','Contacto'].map(l=><a key={l} href="#" className="text-white/25 text-xs font-body hover:text-white/60 transition-colors">{l}</a>)}</div>
+      </div>
+    </footer>
+  );
+}
+
+/* ── App ── */
+function App(){
+  return(
+    <div style={{background:'#000'}}>
+      <Hero/>
+      <Products/>
+      <WhyUs/>
+      <CtaFinal/>
+      <Footer/>
+    </div>
+  );
+}
+
+window.addEventListener('load',()=>{
+  ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+});
+</script>
+</body>
+</html>

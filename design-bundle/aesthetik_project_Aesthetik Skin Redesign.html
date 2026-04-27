@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aesthetik Skin — Dermocosmética Coreana de Élite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #0b0a08;
+    color: #ede8e0;
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: rgba(185,152,90,0.3); color: #ede8e0; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #0b0a08; }
+  ::-webkit-scrollbar-thumb { background: #3a3228; border-radius: 2px; }
+</style>
+</head>
+<body>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "light",
+  "accentColor": "#987a43",
+  "heroLayout": "centered",
+  "showParticles": true
+}/*EDITMODE-END*/;
+
+/* ── Shared tokens ── */
+const T = {
+  gold: 'oklch(0.68 0.09 75)',
+  goldHex: '#b9985a',
+  cream: '#ede8e0',
+  bg: '#0b0a08',
+  bgLight: '#f5f0e8',
+  surface: '#161410',
+  muted: '#6b6358',
+  border: 'rgba(185,152,90,0.18)',
+};
+
+/* ── useInView ── */
+function useInView(threshold = 0.15) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVisible(true); obs.disconnect(); }
+    }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, visible];
+}
+
+/* ── NAV ── */
+function Nav({ theme, accentColor }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const isDark = theme === 'dark';
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const navBg = isDark
+    ? scrolled ? 'rgba(11,10,8,0.96)' : 'transparent'
+    : scrolled ? 'rgba(245,240,232,0.97)' : 'transparent';
+  const textColor = isDark ? T.cream : (scrolled ? '#1a1612' : T.cream);
+
+  return (
+    <nav style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+      padding: '0 48px',
+      height: '72px',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      background: navBg,
+      borderBottom: scrolled ? `1px solid ${T.border}` : '1px solid transparent',
+      backdropFilter: scrolled ? 'blur(20px)' : 'none',
+      transition: 'all 0.5s cubic-bezier(0.16,1,0.3,1)',
+    }}>
+      {/* Logo */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{
+          width: 36, height: 36, borderRadius: '50%',
+          border: `1.5px solid ${accentColor}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 13, color: accentColor, letterSpacing: 1, fontWeight: 500 }}>AS</span>
+        </div>
+        <div>
+          <div style={{ fontSize: 13, letterSpacing: '0.18em', fontWeight: 500, color: textColor, transition: 'color 0.4s' }}>AESTHETIK SKIN</div>
+          <div style={{ fontSize: 9, letterSpacing: '0.22em', color: T.muted, textTransform: 'uppercase', marginTop: 1 }}>Dermocosmética Coreana</div>
+        </div>
+      </div>
+
+      {/* Links */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
+        {['Nosotros','Productos','Certificaciones','Contacto'].map(l => (
+          <a key={l} href="#" style={{
+            fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
+            color: textColor, textDecoration: 'none', fontWeight: 400,
+            transition: 'color 0.3s', opacity: 0.75,
+          }}
+          onMouseEnter={e => { e.target.style.opacity = 1; e.target.style.color = accentColor; }}
+          onMouseLeave={e => { e.target.style.opacity = 0.75; e.target.style.color = textColor; }}>
+            {l}
+          </a>
+        ))}
+        <button style={{
+          padding: '10px 24px', border: `1px solid ${accentColor}`,
+          background: 'transparent', color: accentColor,
+          fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase',
+          cursor: 'pointer', transition: 'all 0.3s',
+          fontFamily: "'DM Sans', sans-serif",
+        }}
+        onMouseEnter={e => { e.currentTarget.style.background = accentColor; e.currentTarget.style.color = '#0b0a08'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = accentColor; }}>
+          Cotizar
+        </button>
+      </div>
+    </nav>
+  );
+}
+
+/* ── HERO ── */
+function Hero({ theme, accentColor, heroLayout }) {
+  const [loaded, setLoaded] = useState(false);
+  const isDark = theme === 'dark';
+  const bg = isDark ? T.bg : T.bgLight;
+  const fg = isDark ? T.cream : '#1a1612';
+
+  useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
+
+  const words = ['Coreana', 'de Élite'];
+
+  return (
+    <section style={{
+      minHeight: '100vh', background: bg,
+      display: 'flex', alignItems: 'center',
+      position: 'relative', overflow: 'hidden',
+      paddingTop: 72,
+    }}>
+      {/* Background texture */}
+      <div style={{
+        position: 'absolute', inset: 0, opacity: isDark ? 0.03 : 0.04,
+        backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 39px, ${fg} 39px, ${fg} 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, ${fg} 39px, ${fg} 40px)`,
+      }} />
+
+      {/* Glow */}
+      <div style={{
+        position: 'absolute', top: '20%', right: '10%',
+        width: 600, height: 600, borderRadius: '50%',
+        background: `radial-gradient(circle, ${accentColor}18 0%, transparent 70%)`,
+        pointerEvents: 'none',
+      }} />
+
+      <div style={{
+        width: '100%', maxWidth: 1400, margin: '0 auto',
+        padding: '80px 48px',
+        display: 'grid',
+        gridTemplateColumns: heroLayout === 'split' ? '1fr 1fr' : '1fr',
+        gap: 80, alignItems: 'center',
+      }}>
+        {/* Left */}
+        <div>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 16, marginBottom: 40,
+            opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(16px)',
+            transition: 'all 0.8s cubic-bezier(0.16,1,0.3,1)',
+          }}>
+            <div style={{ width: 32, height: 1, background: accentColor }} />
+            <span style={{ fontSize: 10, letterSpacing: '0.3em', color: accentColor, textTransform: 'uppercase' }}>
+              Dermocosmética Premium · Corea del Sur
+            </span>
+          </div>
+
+          <h1 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: 'clamp(52px, 6vw, 88px)',
+            fontWeight: 300, lineHeight: 1.05,
+            color: fg, letterSpacing: '-0.01em',
+            marginBottom: 12,
+            opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(24px)',
+            transition: 'all 1s cubic-bezier(0.16,1,0.3,1) 0.1s',
+          }}>
+            Dermocosmética
+          </h1>
+          <h1 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: 'clamp(52px, 6vw, 88px)',
+            fontWeight: 300, lineHeight: 1.05,
+            fontStyle: 'italic', color: accentColor, letterSpacing: '-0.01em',
+            marginBottom: 12,
+            opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(24px)',
+            transition: 'all 1s cubic-bezier(0.16,1,0.3,1) 0.2s',
+          }}>
+            Coreana de Élite
+          </h1>
+          <h1 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: 'clamp(52px, 6vw, 88px)',
+            fontWeight: 300, lineHeight: 1.05,
+            color: fg, letterSpacing: '-0.01em',
+            marginBottom: 48,
+            opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(24px)',
+            transition: 'all 1s cubic-bezier(0.16,1,0.3,1) 0.3s',
+          }}>
+            en México
+          </h1>
+
+          <p style={{
+            fontSize: 15, lineHeight: 1.75, color: isDark ? '#a09488' : '#5a5048',
+            maxWidth: 400, marginBottom: 48, fontWeight: 300,
+            opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(16px)',
+            transition: 'all 1s cubic-bezier(0.16,1,0.3,1) 0.4s',
+          }}>
+            Distribuidores autorizados de <strong style={{ color: fg, fontWeight: 500 }}>Voltena</strong> y{' '}
+            <strong style={{ color: fg, fontWeight: 500 }}>Nabota</strong> para médicos estéticos, dermatólogos y clínicas de alta exigencia en México y Latinoamérica.
+          </p>
+
+          <div style={{
+            display: 'flex', gap: 16, flexWrap: 'wrap',
+            opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(16px)',
+            transition: 'all 1s cubic-bezier(0.16,1,0.3,1) 0.5s',
+          }}>
+            <button style={{
+              padding: '16px 36px', background: accentColor,
+              border: 'none', color: '#0b0a08',
+              fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
+              cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 500,
+              display: 'flex', alignItems: 'center', gap: 10,
+              transition: 'all 0.3s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 12px 40px ${accentColor}40`; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.524 5.845L.057 23.214a.5.5 0 00.6.63l5.498-1.43A11.938 11.938 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+              Cotizar por WhatsApp
+            </button>
+            <button style={{
+              padding: '16px 36px', background: 'transparent',
+              border: `1px solid ${isDark ? 'rgba(237,232,224,0.25)' : 'rgba(26,22,18,0.25)'}`,
+              color: fg, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
+              cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 400,
+              transition: 'all 0.3s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = accentColor; e.currentTarget.style.color = accentColor; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = isDark ? 'rgba(237,232,224,0.25)' : 'rgba(26,22,18,0.25)'; e.currentTarget.style.color = fg; }}>
+              Ver Catálogo
+            </button>
+          </div>
+
+          {/* Trust badges */}
+          <div style={{
+            display: 'flex', gap: 24, marginTop: 56, paddingTop: 32,
+            borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'}`,
+            opacity: loaded ? 1 : 0, transition: 'all 1s cubic-bezier(0.16,1,0.3,1) 0.6s',
+          }}>
+            {['MFDS','FDA','CE Mark','Made in Korea','Dist. Autorizado'].map(b => (
+              <div key={b} style={{ fontSize: 9, letterSpacing: '0.18em', color: T.muted, textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{b}</div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right — product grid */}
+        {heroLayout === 'split' && (
+          <div style={{
+            display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12,
+            opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateX(32px)',
+            transition: 'all 1.1s cubic-bezier(0.16,1,0.3,1) 0.3s',
+          }}>
+            {[
+              { name: 'Voltena No.1', sub: '10 vials × 5 viales', color: '#e07b3a', desc: 'Toxina botulínica tipo A' },
+              { name: 'Voltena No.2', sub: '50cc', color: '#7c6bbd', desc: 'Fórmula concentrada' },
+              { name: 'Voltena No.3', sub: '300U · anti-reducer trio', color: '#4a90b8', desc: 'Triple acción' },
+              { name: 'Nabota', sub: '100U · 200U', color: '#5a9e78', desc: 'Premium botulínica' },
+            ].map((p, i) => (
+              <ProductCard key={p.name} product={p} index={i} isDark={isDark} accentColor={accentColor} delay={i * 80} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Scroll indicator */}
+      <div style={{
+        position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+        opacity: loaded ? 0.4 : 0, transition: 'opacity 1s 1s',
+      }}>
+        <span style={{ fontSize: 9, letterSpacing: '0.25em', color: T.muted, textTransform: 'uppercase' }}>Scroll</span>
+        <div style={{
+          width: 1, height: 40, background: `linear-gradient(to bottom, ${accentColor}, transparent)`,
+          animation: 'scrollPulse 2s ease-in-out infinite',
+        }} />
+      </div>
+
+      <style>{`
+        @keyframes scrollPulse {
+          0%, 100% { opacity: 0.4; transform: scaleY(1); }
+          50% { opacity: 1; transform: scaleY(0.7); }
+        }
+      `}</style>
+    </section>
+  );
+}
+
+/* ── PRODUCT CARD ── */
+function ProductCard({ product, index, isDark, accentColor, delay = 0 }) {
+  const [hovered, setHovered] = useState(false);
+  const [ref, visible] = useInView(0.1);
+
+  return (
+    <div ref={ref} style={{
+      background: isDark
+        ? hovered ? '#201c17' : '#141210'
+        : hovered ? '#ffffff' : '#ede8dc',
+      border: hovered ? `1px solid ${accentColor}50` : `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`,
+      padding: 24, cursor: 'pointer',
+      transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+      transform: visible ? (hovered ? 'translateY(-4px)' : 'none') : 'translateY(20px)',
+      opacity: visible ? 1 : 0,
+      transitionDelay: visible ? `${delay}ms` : '0ms',
+      boxShadow: hovered ? `0 20px 60px ${accentColor}15` : 'none',
+      position: 'relative', overflow: 'hidden',
+    }}
+    onMouseEnter={() => setHovered(true)}
+    onMouseLeave={() => setHovered(false)}>
+
+      {/* color swatch */}
+      <div style={{
+        width: '100%', aspectRatio: '1.3',
+        background: `linear-gradient(135deg, ${product.color}22 0%, ${product.color}44 100%)`,
+        borderRadius: 2, marginBottom: 16,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        position: 'relative', overflow: 'hidden',
+        border: `1px solid ${product.color}30`,
+      }}>
+        {/* placeholder label */}
+        <div style={{ textAlign: 'center', padding: 8 }}>
+          <div style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: 22, fontWeight: 600, color: product.color,
+            lineHeight: 1, marginBottom: 4,
+          }}>{product.name.split(' ').slice(-1)[0]}</div>
+          <div style={{ fontSize: 9, letterSpacing: '0.15em', color: product.color, opacity: 0.7, textTransform: 'uppercase' }}>
+            {product.name.split(' ')[0]}
+          </div>
+        </div>
+        {/* accent line */}
+        <div style={{
+          position: 'absolute', left: 0, top: 0, bottom: 0,
+          width: 3, background: product.color, opacity: 0.6,
+        }} />
+      </div>
+
+      <div style={{ fontSize: 12, fontWeight: 500, color: isDark ? T.cream : '#1a1612', marginBottom: 2, letterSpacing: '0.02em' }}>
+        {product.name}
+      </div>
+      <div style={{ fontSize: 10, color: T.muted, letterSpacing: '0.08em', marginBottom: 8 }}>{product.sub}</div>
+      <div style={{
+        fontSize: 10, color: accentColor, letterSpacing: '0.05em',
+        opacity: hovered ? 1 : 0, transform: hovered ? 'none' : 'translateY(4px)',
+        transition: 'all 0.3s',
+      }}>
+        Cotizar →
+      </div>
+    </div>
+  );
+}
+
+/* ── PRODUCTS SECTION ── */
+function ProductsSection({ theme, accentColor }) {
+  const [ref, visible] = useInView();
+  const isDark = theme === 'dark';
+  const bg = isDark ? '#0e0d0b' : '#f0ebe1';
+  const fg = isDark ? T.cream : '#1a1612';
+
+  return (
+    <section style={{ background: bg, padding: '120px 48px' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto' }}>
+        <div ref={ref} style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
+          marginBottom: 72,
+          opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(24px)',
+          transition: 'all 0.8s cubic-bezier(0.16,1,0.3,1)',
+        }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <div style={{ width: 24, height: 1, background: accentColor }} />
+              <span style={{ fontSize: 10, letterSpacing: '0.3em', color: accentColor, textTransform: 'uppercase' }}>Portafolio</span>
+            </div>
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 'clamp(36px, 4vw, 64px)', fontWeight: 300,
+              color: fg, lineHeight: 1.1,
+            }}>
+              Productos<br /><em style={{ color: accentColor }}>de élite</em>
+            </h2>
+          </div>
+          <p style={{ fontSize: 13, color: T.muted, maxWidth: 280, textAlign: 'right', lineHeight: 1.7, fontWeight: 300 }}>
+            Formulados bajo estándares de investigación coreana de última generación
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+          {[
+            { name: 'Voltena No.1', sub: '10 vials × 5 viales', color: '#e07b3a', desc: 'Toxina botulínica tipo A' },
+            { name: 'Voltena No.2', sub: '50cc', color: '#7c6bbd', desc: 'Fórmula concentrada' },
+            { name: 'Voltena No.3', sub: '300U · anti-reducer trio', color: '#4a90b8', desc: 'Triple acción' },
+            { name: 'Nabota', sub: '100U · 200U', color: '#5a9e78', desc: 'Premium botulínica' },
+          ].map((p, i) => (
+            <ProductCard key={p.name} product={p} index={i} isDark={isDark} accentColor={accentColor} delay={i * 100} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── CERT CARD ── */
+function CertCard({ cert, isDark, fg }) {
+  const [h, setH] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{
+        background: h ? (isDark ? '#1c1914' : '#f0e8d8') : (isDark ? '#161410' : '#e8e1d4'),
+        padding: '48px 40px', textAlign: 'center',
+        transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)', cursor: 'default',
+      }}>
+      <div style={{
+        fontFamily: "'Cormorant Garamond', serif",
+        fontSize: 42, fontWeight: 300,
+        color: h ? cert.color : fg,
+        marginBottom: 16, lineHeight: 1,
+        transition: 'color 0.35s',
+      }}>{cert.code}</div>
+      <div style={{ fontSize: 11, fontWeight: 500, color: fg, marginBottom: 4, letterSpacing: '0.05em' }}>{cert.full}</div>
+      <div style={{ fontSize: 10, color: T.muted, letterSpacing: '0.1em' }}>{cert.country}</div>
+    </div>
+  );
+}
+
+/* ── CERTIFICATIONS ── */
+function Certifications({ theme, accentColor }) {
+  const [ref, visible] = useInView();
+  const isDark = theme === 'dark';
+  const bg = isDark ? T.surface : '#e8e1d4';
+  const fg = isDark ? T.cream : '#1a1612';
+
+  const certs = [
+    { code: 'MFDS', full: 'Ministry of Food & Drug Safety', country: 'Corea del Sur', color: '#e07b3a' },
+    { code: 'FDA', full: 'Food & Drug Administration', country: 'Estados Unidos', color: '#4a90b8' },
+    { code: 'CE', full: 'Conformité Européenne', country: 'Unión Europea', color: '#7c6bbd' },
+    { code: '한국', full: 'Made in Korea', country: 'Fabricación certificada', color: '#5a9e78' },
+  ];
+
+  return (
+    <section style={{ background: bg, padding: '120px 48px' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto' }}>
+        <div ref={ref} style={{
+          textAlign: 'center', marginBottom: 72,
+          opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(24px)',
+          transition: 'all 0.8s cubic-bezier(0.16,1,0.3,1)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 20 }}>
+            <div style={{ width: 24, height: 1, background: accentColor }} />
+            <span style={{ fontSize: 10, letterSpacing: '0.3em', color: accentColor, textTransform: 'uppercase' }}>Certificaciones</span>
+            <div style={{ width: 24, height: 1, background: accentColor }} />
+          </div>
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: 'clamp(32px, 3.5vw, 56px)', fontWeight: 300,
+            color: fg,
+          }}>
+            Respaldo internacional
+          </h2>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)' }}>
+          {certs.map((c) => (
+            <CertCard key={c.code} cert={c} isDark={isDark} fg={fg} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── CTA SECTION ── */
+function CtaSection({ theme, accentColor }) {
+  const [ref, visible] = useInView();
+  const isDark = theme === 'dark';
+  const bg = isDark ? '#0b0a08' : '#f5f0e8';
+  const fg = isDark ? T.cream : '#1a1612';
+
+  return (
+    <section style={{ background: bg, padding: '140px 48px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 800, height: 800, borderRadius: '50%',
+        background: `radial-gradient(circle, ${accentColor}10 0%, transparent 70%)`,
+        pointerEvents: 'none',
+      }} />
+      <div ref={ref} style={{
+        maxWidth: 700, margin: '0 auto', textAlign: 'center',
+        opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(32px)',
+        transition: 'all 0.9s cubic-bezier(0.16,1,0.3,1)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 32 }}>
+          <div style={{ width: 24, height: 1, background: accentColor }} />
+          <span style={{ fontSize: 10, letterSpacing: '0.3em', color: accentColor, textTransform: 'uppercase' }}>Distribución autorizada</span>
+          <div style={{ width: 24, height: 1, background: accentColor }} />
+        </div>
+
+        <h2 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 'clamp(40px, 5vw, 72px)', fontWeight: 300,
+          color: fg, lineHeight: 1.1, marginBottom: 24,
+        }}>
+          ¿Listo para elevar tu<br /><em style={{ color: accentColor }}>clínica?</em>
+        </h2>
+        <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.8, marginBottom: 48, fontWeight: 300 }}>
+          Contáctanos para cotizar productos originales certificados. Atención directa para profesionales de la salud estética.
+        </p>
+
+        <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <button style={{
+            padding: '18px 48px', background: accentColor,
+            border: 'none', color: '#0b0a08',
+            fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
+            cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 500,
+            display: 'flex', alignItems: 'center', gap: 10,
+            transition: 'all 0.3s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 16px 48px ${accentColor}40`; }}
+          onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.524 5.845L.057 23.214a.5.5 0 00.6.63l5.498-1.43A11.938 11.938 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+            Cotizar por WhatsApp
+          </button>
+          <button style={{
+            padding: '18px 48px', background: 'transparent',
+            border: `1px solid ${isDark ? 'rgba(237,232,224,0.2)' : 'rgba(26,22,18,0.2)'}`,
+            color: fg, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
+            cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
+            transition: 'all 0.3s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = accentColor; e.currentTarget.style.color = accentColor; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = isDark ? 'rgba(237,232,224,0.2)' : 'rgba(26,22,18,0.2)'; e.currentTarget.style.color = fg; }}>
+            Ver Catálogo
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── FOOTER ── */
+function Footer({ theme, accentColor }) {
+  const isDark = theme === 'dark';
+  const bg = isDark ? '#080706' : '#e0d9cc';
+  const fg = isDark ? T.cream : '#1a1612';
+  return (
+    <footer style={{ background: bg, padding: '48px', borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)'}` }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 28, height: 28, borderRadius: '50%', border: `1px solid ${accentColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 10, color: accentColor }}>AS</span>
+          </div>
+          <div>
+            <div style={{ fontSize: 11, letterSpacing: '0.16em', fontWeight: 500, color: fg }}>AESTHETIK SKIN</div>
+            <div style={{ fontSize: 9, letterSpacing: '0.2em', color: T.muted }}>Dermocosmética Coreana</div>
+          </div>
+        </div>
+        <div style={{ fontSize: 10, color: T.muted, letterSpacing: '0.1em' }}>© 2025 Aesthetik Skin · México</div>
+        <div style={{ display: 'flex', gap: 24 }}>
+          {['Privacidad','Términos','Contacto'].map(l => (
+            <a key={l} href="#" style={{ fontSize: 10, letterSpacing: '0.15em', color: T.muted, textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={e => e.target.style.color = accentColor}
+              onMouseLeave={e => e.target.style.color = T.muted}>{l}</a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ── APP ── */
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  const theme = t.theme || 'dark';
+  const accentColor = t.accentColor || '#b9985a';
+  const heroLayout = t.heroLayout || 'split';
+
+  return (
+    <div>
+      <Nav theme={theme} accentColor={accentColor} />
+      <Hero theme={theme} accentColor={accentColor} heroLayout={heroLayout} />
+      <ProductsSection theme={theme} accentColor={accentColor} />
+      <Certifications theme={theme} accentColor={accentColor} />
+      <CtaSection theme={theme} accentColor={accentColor} />
+      <Footer theme={theme} accentColor={accentColor} />
+
+      <TweaksPanel>
+        <TweakSection label="Tema" />
+        <TweakRadio label="Modo" value={theme} options={['dark','light']} onChange={v => setTweak('theme', v)} />
+        <TweakSection label="Color acento" />
+        <TweakColor label="Acento" value={accentColor} onChange={v => setTweak('accentColor', v)} />
+        <TweakSection label="Layout hero" />
+        <TweakRadio label="Columnas" value={heroLayout} options={['split','centered']} onChange={v => setTweak('heroLayout', v)} />
+      </TweaksPanel>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+<div id="root"></div>
+</body>
+</html>

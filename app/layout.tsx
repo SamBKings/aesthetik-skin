@@ -1,0 +1,62 @@
+import type { Metadata } from "next";
+import { Cormorant_Garamond, Barlow } from "next/font/google";
+import "./globals.css";
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-barlow",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "Aesthetik Skin | Distribuidor Autorizado Voltena México — Dermocosmética Coreana",
+  description:
+    "Distribuidores oficiales de Voltena y Nabota en México. Productos coreanos premium para contorno facial, corporal y rejuvenecimiento. Asesoría profesional.",
+  keywords:
+    "voltena méxico, nabota méxico, dermocosmética coreana, relleno corporal, toxina botulínica, innotox, dermalax, elasty, hyaron",
+  authors: [{ name: "Aesthetik Skin" }],
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    url: "https://aesthetikskin.mx",
+    siteName: "Aesthetik Skin",
+    title: "Aesthetik Skin | Distribuidor Autorizado Voltena México",
+    description: "Distribuidores oficiales de Voltena y Nabota en México. Productos coreanos premium para profesionales de la estética.",
+    images: [{ url: "/assets/og-image.jpg", width: 1200, height: 630, alt: "Aesthetik Skin" }],
+  },
+  robots: { index: true, follow: true },
+  icons: { icon: [{ url: "/favicon.svg", type: "image/svg+xml" }] },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="es" className={`${cormorant.variable} ${barlow.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "Aesthetik Skin",
+              description: "Distribuidores autorizados de Voltena y Nabota en México.",
+              url: "https://aesthetikskin.mx",
+              telephone: "+529612513578",
+              address: { "@type": "PostalAddress", addressCountry: "MX" },
+            }),
+          }}
+        />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
