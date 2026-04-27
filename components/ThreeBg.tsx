@@ -21,8 +21,7 @@ export default function ThreeBg({ scene, className = "" }: Props) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    let animId: number;
-    let cleanupFn: (() => void) | undefined;
+    let animId = 0;
 
     import("three").then((THREE) => {
       const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -38,11 +37,12 @@ export default function ThreeBg({ scene, className = "" }: Props) {
       camera.position.z = 30;
 
       const clock = new THREE.Clock();
+      const setId = (id: number) => { animId = id; };
 
-      if (scene === "molecular") cleanupFn = buildMolecular(THREE, threeScene, camera, renderer, clock, (id) => { animId = id; });
-      else if (scene === "dna") cleanupFn = buildDNA(THREE, threeScene, camera, renderer, clock, (id) => { animId = id; });
-      else if (scene === "crystals") cleanupFn = buildCrystals(THREE, threeScene, camera, renderer, clock, (id) => { animId = id; });
-      else if (scene === "wave") cleanupFn = buildWave(THREE, threeScene, camera, renderer, clock, (id) => { animId = id; });
+      if (scene === "molecular") buildMolecular(THREE, threeScene, camera, renderer, clock, setId);
+      else if (scene === "dna") buildDNA(THREE, threeScene, camera, renderer, clock, setId);
+      else if (scene === "crystals") buildCrystals(THREE, threeScene, camera, renderer, clock, setId);
+      else if (scene === "wave") buildWave(THREE, threeScene, camera, renderer, clock, setId);
 
       const onResize = () => {
         const nw = canvas.parentElement?.clientWidth ?? window.innerWidth;
@@ -56,7 +56,6 @@ export default function ThreeBg({ scene, className = "" }: Props) {
       return () => {
         window.removeEventListener("resize", onResize);
         cancelAnimationFrame(animId);
-        cleanupFn?.();
         renderer.dispose();
       };
     });
