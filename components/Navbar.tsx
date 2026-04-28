@@ -11,6 +11,36 @@ const links = [
 
 const WA = "https://wa.me/529612513578?text=" + encodeURIComponent("Hola, quisiera más información sobre sus productos.");
 
+function LogoMark() {
+  const [imgError, setImgError] = useState(false);
+
+  if (imgError) {
+    /* Fallback texto elegante si la imagen no existe aún */
+    return (
+      <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
+        <span style={{ fontFamily: "var(--font-montserrat), system-ui", fontSize: "14px", letterSpacing: "0.24em", fontWeight: 500, color: "#1A1A1A", textTransform: "uppercase" }}>
+          Aesthetik
+        </span>
+        <span style={{ fontFamily: "var(--font-montserrat), system-ui", fontSize: "9px", letterSpacing: "0.36em", fontWeight: 300, color: "#7A6B60", textTransform: "uppercase" }}>
+          Skin
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src="/assets/logo.png"
+      alt="Aesthetik Skin"
+      width={130}
+      height={44}
+      priority
+      onError={() => setImgError(true)}
+      style={{ height: "38px", width: "auto", objectFit: "contain" }}
+    />
+  );
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,17 +64,8 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
 
-        {/* Logo image */}
         <a href="#" className="flex items-center select-none" aria-label="Aesthetik Skin">
-          <Image
-            src="/assets/logo.png"
-            alt="Aesthetik Skin"
-            width={120}
-            height={44}
-            className="object-contain"
-            style={{ height: "40px", width: "auto" }}
-            priority
-          />
+          <LogoMark />
         </a>
 
         {/* Desktop links */}
@@ -79,18 +100,9 @@ export default function Navbar() {
           aria-label="Menú"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          <span
-            className="block w-5 h-px transition-all duration-300"
-            style={{ background: "#4A3F38", transform: menuOpen ? "rotate(45deg) translate(3px,3px)" : "none" }}
-          />
-          <span
-            className="block w-5 h-px transition-all duration-300"
-            style={{ background: "#4A3F38", opacity: menuOpen ? 0 : 1 }}
-          />
-          <span
-            className="block h-px transition-all duration-300"
-            style={{ background: "#4A3F38", width: menuOpen ? "20px" : "12px", transform: menuOpen ? "rotate(-45deg) translate(2px,-2px)" : "none" }}
-          />
+          <span className="block w-5 h-px transition-all duration-300" style={{ background: "#4A3F38", transform: menuOpen ? "rotate(45deg) translate(3px,3px)" : "none" }} />
+          <span className="block w-5 h-px transition-all duration-300" style={{ background: "#4A3F38", opacity: menuOpen ? 0 : 1 }} />
+          <span className="block h-px transition-all duration-300"    style={{ background: "#4A3F38", width: menuOpen ? "20px" : "12px", transform: menuOpen ? "rotate(-45deg) translate(2px,-2px)" : "none" }} />
         </button>
       </div>
 

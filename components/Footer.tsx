@@ -1,3 +1,5 @@
+"use client";
+import { useState } from "react";
 import { products } from "@/lib/products";
 import Image from "next/image";
 
@@ -24,6 +26,36 @@ const navSections = [
   },
 ];
 
+function FooterLogo() {
+  const [imgError, setImgError] = useState(false);
+
+  if (imgError) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", lineHeight: 1, marginBottom: "20px" }}>
+        <span style={{ fontFamily: "var(--font-montserrat), system-ui", fontSize: "14px", letterSpacing: "0.24em", fontWeight: 500, color: "#D9CEC3", textTransform: "uppercase" }}>
+          Aesthetik
+        </span>
+        <span style={{ fontFamily: "var(--font-montserrat), system-ui", fontSize: "9px", letterSpacing: "0.36em", fontWeight: 300, color: "#9E9087", textTransform: "uppercase", marginTop: "2px" }}>
+          Skin
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <a href="#" className="inline-block mb-5" aria-label="Aesthetik Skin">
+      <Image
+        src="/assets/logo.png"
+        alt="Aesthetik Skin"
+        width={130}
+        height={48}
+        onError={() => setImgError(true)}
+        style={{ height: "46px", width: "auto", filter: "brightness(0) invert(1)", opacity: 0.75 }}
+      />
+    </a>
+  );
+}
+
 export default function Footer() {
   return (
     <footer style={{ background: "#1A1A1A", color: "#fff" }} className="pt-16 pb-8">
@@ -35,23 +67,7 @@ export default function Footer() {
         >
           {/* Brand */}
           <div>
-            {/* Logo — versión clara sobre fondo oscuro */}
-            <a href="#" className="inline-block mb-5" aria-label="Aesthetik Skin">
-              <Image
-                src="/assets/logo.png"
-                alt="Aesthetik Skin"
-                width={130}
-                height={48}
-                className="object-contain"
-                style={{
-                  height: "46px",
-                  width: "auto",
-                  /* invertir colores para que se vea sobre negro */
-                  filter: "brightness(0) invert(1)",
-                  opacity: 0.75,
-                }}
-              />
-            </a>
+            <FooterLogo />
 
             <p
               style={{
