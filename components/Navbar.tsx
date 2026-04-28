@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import Logo from "./Logo";
+import Image from "next/image";
 
 const links = [
-  { label: "Productos",   href: "#products" },
+  { label: "Productos",     href: "#products" },
   { label: "Por qué Corea", href: "#why" },
-  { label: "Nosotros",    href: "#about" },
-  { label: "FAQ",         href: "#faq" },
+  { label: "Nosotros",      href: "#about" },
+  { label: "FAQ",           href: "#faq" },
 ];
 
 const WA = "https://wa.me/529612513578?text=" + encodeURIComponent("Hola, quisiera más información sobre sus productos.");
@@ -25,7 +25,7 @@ export default function Navbar() {
     <nav
       className="fixed top-0 inset-x-0 z-50 transition-all duration-500"
       style={{
-        background: scrolled ? "rgba(244,237,228,0.92)" : "rgba(244,237,228,0.75)",
+        background: scrolled ? "rgba(244,237,228,0.94)" : "rgba(244,237,228,0.80)",
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
         borderBottom: scrolled ? "1px solid rgba(187,167,150,0.3)" : "1px solid transparent",
@@ -34,25 +34,17 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
 
-        {/* Logo */}
-        <a href="#" className="flex items-center gap-2.5 select-none" aria-label="Aesthetik Skin">
-          {/* Mini butterfly mark */}
-          <svg width="22" height="26" viewBox="0 0 72 84" fill="none" aria-hidden="true">
-            <path d="M35 7 C17 14 10 36 15 62 C22 50 31 27 35 7Z" fill="#BBA796" opacity="0.92"/>
-            <path d="M37 7 C55 14 62 36 56 62 C50 50 42 27 37 7Z" fill="#D9CEC3" opacity="0.80"/>
-            <path d="M35 7 C33 22 33 44 36 62 C39 44 40 22 37 7Z" fill="#EDE5DC" opacity="0.65"/>
-            <path d="M36 5 C40 16 32 32 36 48 C38 57 42 64 40 72" stroke="#4A3F38" strokeWidth="1.6" fill="none" strokeLinecap="round"/>
-            <path d="M40 70 C46 65 53 69 49 75 C45 71 42 71 40 72Z" fill="#BBA796" opacity="0.85"/>
-            <circle cx="40" cy="72" r="2.2" fill="#4A3F38"/>
-          </svg>
-          <div>
-            <div className="font-body font-medium text-brand-mid" style={{ fontSize: "13px", letterSpacing: "0.22em", textTransform: "uppercase", lineHeight: 1 }}>
-              Aesthetik
-            </div>
-            <div className="font-body font-light text-mid" style={{ fontSize: "9px", letterSpacing: "0.32em", textTransform: "uppercase", lineHeight: 1.2 }}>
-              Skin
-            </div>
-          </div>
+        {/* Logo image */}
+        <a href="#" className="flex items-center select-none" aria-label="Aesthetik Skin">
+          <Image
+            src="/assets/logo.png"
+            alt="Aesthetik Skin"
+            width={120}
+            height={44}
+            className="object-contain"
+            style={{ height: "40px", width: "auto" }}
+            priority
+          />
         </a>
 
         {/* Desktop links */}
@@ -117,7 +109,7 @@ export default function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className="block py-3 font-body text-brand-mid hover:text-rose border-b border-taupe-light/30 transition-colors"
+              className="block py-3 font-body text-brand-mid border-b border-taupe-light/30 transition-colors hover:text-rose"
               style={{ fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase" }}
               onClick={() => setMenuOpen(false)}
             >
