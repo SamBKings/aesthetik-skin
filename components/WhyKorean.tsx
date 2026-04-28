@@ -62,7 +62,7 @@ function ReasonCard({ r, i }: { r: typeof reasons[0]; i: number }) {
       <h3 className="font-heading text-white italic" style={{ fontSize: "1.3rem", fontWeight: 300, lineHeight: 1.3 }}>
         {r.title}
       </h3>
-      <p className="font-body text-white/45" style={{ fontSize: "13px", lineHeight: 1.8 }}>
+      <p className="font-body text-white/75" style={{ fontSize: "13px", lineHeight: 1.8 }}>
         {r.text}
       </p>
     </div>
@@ -99,7 +99,7 @@ export default function WhyKorean() {
               <p className="font-heading text-white italic" style={{ fontSize: "3rem", fontWeight: 300, lineHeight: 1, color: "#00d4e8" }}>
                 {s.value}
               </p>
-              <p className="font-body text-white/35 mt-3" style={{ fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase" }}>
+              <p className="font-body text-white/65 mt-3" style={{ fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase" }}>
                 {s.label}
               </p>
             </div>

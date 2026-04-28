@@ -81,11 +81,11 @@ function TestCard({ t, i }: { t: typeof testimonials[0]; i: number }) {
           className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 border"
           style={{ background: `${t.color}15`, borderColor: `${t.color}35` }}
         >
-          <span className="font-heading italic text-white/70" style={{ fontSize: "12px" }}>{t.initials}</span>
+          <span className="font-heading italic text-white/85" style={{ fontSize: "12px" }}>{t.initials}</span>
         </div>
         <div>
-          <p className="font-body text-white/70 font-medium" style={{ fontSize: "12px" }}>{t.author}</p>
-          <p className="font-body text-white/30" style={{ fontSize: "10px", letterSpacing: "0.06em" }}>{t.role}</p>
+          <p className="font-body text-white/85 font-medium" style={{ fontSize: "12px" }}>{t.author}</p>
+          <p className="font-body text-white/65" style={{ fontSize: "10px", letterSpacing: "0.06em" }}>{t.role}</p>
         </div>
       </div>
     </div>

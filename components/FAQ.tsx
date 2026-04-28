@@ -65,7 +65,7 @@ function FAQItem({ faq, index }: { faq: { q: string; a: string }; index: number 
           className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center border transition-all duration-300"
           style={{
             borderColor: open ? "rgba(0,212,232,0.5)" : "rgba(255,255,255,0.1)",
-            color: open ? "#00d4e8" : "rgba(255,255,255,0.4)",
+            color: open ? "#00d4e8" : "rgba(255,255,255,0.75)",
             background: open ? "rgba(0,212,232,0.08)" : "transparent",
           }}
         >
@@ -77,7 +77,7 @@ function FAQItem({ faq, index }: { faq: { q: string; a: string }; index: number 
         className="overflow-hidden transition-all duration-400"
         style={{ maxHeight: open ? "200px" : "0", transition: "max-height 0.4s cubic-bezier(0.16,1,0.3,1)" }}
       >
-        <p className="font-body text-white/40 pb-6 pr-12" style={{ fontSize: "13px", lineHeight: 1.8 }}>
+        <p className="font-body text-white/75 pb-6 pr-12" style={{ fontSize: "13px", lineHeight: 1.8 }}>
           {faq.a}
         </p>
       </div>
@@ -100,14 +100,14 @@ export default function FAQ() {
               <h2 className="font-heading text-white italic mb-6" style={{ fontSize: "clamp(1.8rem, 3vw, 2.8rem)", fontWeight: 300, lineHeight: 1.15 }}>
                 Resolvemos tus dudas
               </h2>
-              <p className="font-body text-white/35 mb-8" style={{ fontSize: "13px", lineHeight: 1.8 }}>
+              <p className="font-body text-white/70 mb-8" style={{ fontSize: "13px", lineHeight: 1.8 }}>
                 ¿No encuentras lo que buscas? Contáctanos directamente por WhatsApp.
               </p>
               <a
                 href={"https://wa.me/529612513578?text=" + encodeURIComponent("Hola, tengo una pregunta sobre sus productos.")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-body text-xs tracking-widest uppercase border border-white/15 text-white/50 hover:text-white hover:border-white/30 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-body text-xs tracking-widest uppercase border border-white/15 text-white/75 hover:text-white hover:border-white/30 transition-all duration-300"
               >
                 Preguntar por WhatsApp
               </a>

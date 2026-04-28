@@ -6,7 +6,7 @@ import { products, WA_NUMBER } from "@/lib/products";
 const ThreeBg = dynamic(() => import("./ThreeBg"), { ssr: false });
 
 const inputClass = "w-full bg-transparent border border-white/10 px-4 py-3 rounded-full font-body text-white placeholder:text-white/20 focus:outline-none focus:border-aq1/50 transition-colors duration-300 text-sm";
-const labelClass = "block font-body text-white/35 mb-1.5";
+const labelClass = "block font-body text-white/70 mb-1.5";
 const labelStyle = { fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase" as const };
 
 export default function CTAContact() {
@@ -44,7 +44,7 @@ export default function CTAContact() {
               ¿Listo para llevar tu clínica al{" "}
               <span style={{ color: "#c4a96a" }}>siguiente nivel?</span>
             </h2>
-            <p className="font-body text-white/40 mb-12" style={{ fontSize: "14px", lineHeight: 1.8, maxWidth: "400px" }}>
+            <p className="font-body text-white/75 mb-12" style={{ fontSize: "14px", lineHeight: 1.8, maxWidth: "400px" }}>
               Un especialista te asesorará sobre los productos ideales para tu práctica.
               Respuesta garantizada en menos de 24 horas.
             </p>
@@ -62,7 +62,7 @@ export default function CTAContact() {
                 </div>
                 <div>
                   <p className="font-body text-white font-medium" style={{ fontSize: "13px" }}>+52 961 251 3578</p>
-                  <p className="font-body text-white/30" style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" }}>WhatsApp · Respuesta inmediata</p>
+                  <p className="font-body text-white/65" style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" }}>WhatsApp · Respuesta inmediata</p>
                 </div>
               </a>
               <div className="flex items-center gap-5">
@@ -71,7 +71,7 @@ export default function CTAContact() {
                 </div>
                 <div>
                   <p className="font-body text-white font-medium" style={{ fontSize: "13px" }}>Lun–Vie · 9:00 AM – 7:00 PM</p>
-                  <p className="font-body text-white/30" style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" }}>Horario Central (CST)</p>
+                  <p className="font-body text-white/65" style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" }}>Horario Central (CST)</p>
                 </div>
               </div>
             </div>
@@ -91,7 +91,7 @@ export default function CTAContact() {
 
           {/* Right — form */}
           <div className="lgs rounded-2xl p-8 lg:p-10">
-            <p className="font-body text-white/30 mb-8" style={{ fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase" }}>
+            <p className="font-body text-white/65 mb-8" style={{ fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase" }}>
               O déjanos tus datos — te contactamos
             </p>
 
@@ -137,7 +137,7 @@ export default function CTAContact() {
                 {sent ? "Abriendo WhatsApp…" : "Enviar por WhatsApp"}
               </button>
 
-              <p className="font-body text-white/15 text-center" style={{ fontSize: "10px", letterSpacing: "0.06em" }}>
+              <p className="font-body text-white/55 text-center" style={{ fontSize: "10px", letterSpacing: "0.06em" }}>
                 Este formulario abrirá WhatsApp con tu mensaje.
               </p>
             </form>

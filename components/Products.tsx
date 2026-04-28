@@ -63,13 +63,13 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
-        <p className="font-body text-white/35 mb-1" style={{ fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase" }}>
+        <p className="font-body text-white/65 mb-1" style={{ fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase" }}>
           {product.tagline}
         </p>
         <h3 className="font-heading text-white italic mb-2" style={{ fontSize: "1.45rem", fontWeight: 300 }}>
           {product.name}
         </h3>
-        <p className="font-body text-white/45 mb-4 flex-1" style={{ fontSize: "12px", lineHeight: 1.7 }}>
+        <p className="font-body text-white/75 mb-4 flex-1" style={{ fontSize: "12px", lineHeight: 1.7 }}>
           {product.body ?? product.description}
         </p>
 
@@ -79,7 +79,7 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
             {product.tags.slice(0, 3).map((t) => (
               <span
                 key={t}
-                className="px-2.5 py-0.5 rounded-full font-body text-white/50 border border-white/[0.08]"
+                className="px-2.5 py-0.5 rounded-full font-body text-white/75 border border-white/[0.08]"
                 style={{ fontSize: "10px" }}
               >
                 {t}
@@ -125,7 +125,7 @@ export default function Products() {
           <h2 className="font-heading text-white italic mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 300, lineHeight: 1.1 }}>
             Productos de excelencia coreana
           </h2>
-          <p className="font-body text-white/40 max-w-lg mx-auto" style={{ fontSize: "14px", lineHeight: 1.8 }}>
+          <p className="font-body text-white/75 max-w-lg mx-auto" style={{ fontSize: "14px", lineHeight: 1.8 }}>
             100% originales · Certificados internacionalmente · Importados directamente desde Corea del Sur
           </p>
         </div>
@@ -155,14 +155,14 @@ export default function Products() {
 
         {/* Bottom CTA */}
         <div className="mt-12 text-center">
-          <p className="font-body text-white/25 mb-4" style={{ fontSize: "12px", letterSpacing: "0.06em" }}>
+          <p className="font-body text-white/65 mb-4" style={{ fontSize: "12px", letterSpacing: "0.06em" }}>
             ¿Buscas algo específico? Nuestro equipo te asesora sin compromiso.
           </p>
           <a
             href={"https://wa.me/529612513578?text=" + encodeURIComponent("Hola, me gustaría recibir asesoría personalizada sobre sus productos.")}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-body text-xs tracking-widest uppercase text-white/50 border border-white/[0.12] hover:text-white hover:border-white/25 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-body text-xs tracking-widest uppercase text-white/75 border border-white/[0.12] hover:text-white hover:border-white/25 transition-all duration-300"
           >
             Consultar con un especialista
           </a>

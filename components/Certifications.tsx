@@ -71,11 +71,11 @@ function CertCard({ c, i }: { c: typeof certs[0]; i: number }) {
         <p className="font-body text-white/70 font-medium mb-0.5" style={{ fontSize: "12px", letterSpacing: "0.06em" }}>
           {c.full}
         </p>
-        <p className="font-body text-white/30" style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+        <p className="font-body text-white/65" style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
           {c.country}
         </p>
       </div>
-      <p className="font-body text-white/40" style={{ fontSize: "13px", lineHeight: 1.7 }}>
+      <p className="font-body text-white/75" style={{ fontSize: "13px", lineHeight: 1.7 }}>
         {c.description}
       </p>
     </div>
@@ -94,7 +94,7 @@ export default function Certifications() {
           <h2 className="font-heading text-white italic mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 300, lineHeight: 1.1 }}>
             Respaldados por los estándares más altos
           </h2>
-          <p className="font-body text-white/35 max-w-lg mx-auto" style={{ fontSize: "14px", lineHeight: 1.8 }}>
+          <p className="font-body text-white/70 max-w-lg mx-auto" style={{ fontSize: "14px", lineHeight: 1.8 }}>
             Cada producto que distribuimos cuenta con las certificaciones internacionales más exigentes.
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function Certifications() {
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-6 border-t border-white/[0.06] pt-10">
           {["Uso exclusivo profesional", "Trazabilidad completa", "Cadena de frío certificada", "Facturación disponible"].map((t, i) => (
-            <span key={i} className="font-body text-white/20" style={{ fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase" }}>
+            <span key={i} className="font-body text-white/60" style={{ fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase" }}>
               {t}
             </span>
           ))}

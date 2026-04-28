@@ -25,7 +25,7 @@ export default function Newsletter() {
         <h2 className="font-heading text-white italic mb-3" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 300, lineHeight: 1.15 }}>
           Mantente al día
         </h2>
-        <p className="font-body text-white/40 mb-8" style={{ fontSize: "14px", lineHeight: 1.8 }}>
+        <p className="font-body text-white/75 mb-8" style={{ fontSize: "14px", lineHeight: 1.8 }}>
           Recibe novedades de productos, promociones y contenido exclusivo para profesionales de la estética.
         </p>
 
@@ -54,7 +54,7 @@ export default function Newsletter() {
           </button>
         </form>
 
-        <p className="font-body text-white/20 mt-4" style={{ fontSize: "11px", letterSpacing: "0.06em" }}>
+        <p className="font-body text-white/55 mt-4" style={{ fontSize: "11px", letterSpacing: "0.06em" }}>
           Sin spam. Solo contenido relevante para tu práctica.
         </p>
       </div>

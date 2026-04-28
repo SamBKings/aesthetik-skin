@@ -46,7 +46,7 @@ export default function AboutUs() {
               Tu aliado en dermocosmética de vanguardia
             </h2>
 
-            <div className="space-y-5 font-body text-white/45 mb-8" style={{ fontSize: "14px", lineHeight: 1.8 }}>
+            <div className="space-y-5 font-body text-white/75 mb-8" style={{ fontSize: "14px", lineHeight: 1.8 }}>
               <p>
                 En <span className="text-white font-medium">Aesthetik Skin</span> somos distribuidores oficiales y autorizados de{" "}
                 <span style={{ color: "#c4a96a" }}>Voltena</span> en México — la marca de dermocosmética coreana líder en contorno corporal, rellenos y rejuvenecimiento facial no invasivo.
@@ -60,7 +60,7 @@ export default function AboutUs() {
               {pillars.map((p, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="shrink-0 mt-0.5" style={{ color: "#00d4e8", fontSize: "10px" }}>◆</span>
-                  <span className="font-body text-white/50" style={{ fontSize: "13px" }}>{p}</span>
+                  <span className="font-body text-white/75" style={{ fontSize: "13px" }}>{p}</span>
                 </li>
               ))}
             </ul>
@@ -75,7 +75,7 @@ export default function AboutUs() {
                   <p className="font-heading text-white italic" style={{ fontSize: "2.8rem", fontWeight: 300, lineHeight: 1, color: "#00d4e8" }}>
                     {s.value}
                   </p>
-                  <p className="font-body text-white/35 mt-2" style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+                  <p className="font-body text-white/65 mt-2" style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
                     {s.label}
                   </p>
                 </div>
@@ -84,7 +84,7 @@ export default function AboutUs() {
 
             {/* Quote card */}
             <div className="lgs rounded-2xl p-8" style={{ borderTop: "2px solid rgba(196,169,106,0.35)" }}>
-              <p className="font-heading text-white/40 italic mb-3" style={{ fontSize: "0.85rem" }}>
+              <p className="font-heading text-white/70 italic mb-3" style={{ fontSize: "0.85rem" }}>
                 Nuestra promesa
               </p>
               <p className="font-heading text-white italic" style={{ fontSize: "1.3rem", lineHeight: 1.4, fontWeight: 300 }}>

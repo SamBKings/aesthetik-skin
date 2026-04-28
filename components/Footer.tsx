@@ -33,7 +33,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <a href="#" className="font-heading italic text-3xl tracking-widest text-white mb-4 block">as</a>
-            <p className="font-body text-white/25 mb-6" style={{ fontSize: "12px", lineHeight: 1.8, maxWidth: "240px" }}>
+            <p className="font-body text-white/65 mb-6" style={{ fontSize: "12px", lineHeight: 1.8, maxWidth: "240px" }}>
               Distribuidores autorizados de Voltena y Nabota en México. Productos coreanos de élite para profesionales de la estética.
             </p>
             <a
@@ -49,7 +49,7 @@ export default function Footer() {
 
           {navSections.map((s) => (
             <div key={s.title}>
-              <h4 className="font-body text-white/25 mb-5" style={{ fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase" }}>
+              <h4 className="font-body text-white/65 mb-5" style={{ fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase" }}>
                 {s.title}
               </h4>
               <ul className="space-y-3">
@@ -59,7 +59,7 @@ export default function Footer() {
                       href={l.href}
                       target={l.href.startsWith("http") ? "_blank" : undefined}
                       rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="font-body text-white/30 hover:text-white/70 transition-colors duration-300"
+                      className="font-body text-white/70 hover:text-white transition-colors duration-300"
                       style={{ fontSize: "12px" }}
                     >
                       {l.label}
@@ -72,16 +72,16 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="font-body text-white/15" style={{ fontSize: "10px", letterSpacing: "0.08em" }}>
+          <p className="font-body text-white/55" style={{ fontSize: "10px", letterSpacing: "0.08em" }}>
             © 2026 Aesthetik Skin · Todos los derechos reservados
           </p>
           <div className="flex items-center gap-6">
-            <span className="font-body text-white/10" style={{ fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+            <span className="font-body text-white/50" style={{ fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
               Uso exclusivo profesional
             </span>
             <div className="flex items-center gap-3">
               {["MFDS", "FDA", "CE", "🇰🇷"].map((b) => (
-                <span key={b} className="font-body text-white/15" style={{ fontSize: "10px", letterSpacing: "0.1em" }}>{b}</span>
+                <span key={b} className="font-body text-white/55" style={{ fontSize: "10px", letterSpacing: "0.1em" }}>{b}</span>
               ))}
             </div>
           </div>
