@@ -8,7 +8,7 @@ const testimonials = [
     role: "Médico Estético · Clínica Aesthetics Premium, CDMX",
     initials: "MF",
     product: "Voltena No.1",
-    color: "#c4822a",
+    color: "#BE7865",
   },
   {
     text: "Nabota ha superado todas mis expectativas. La pureza del 98.7% se refleja en la precisión clínica — menos unidades necesarias, efectos más predecibles. Llevo 8 meses usándola exclusivamente.",
@@ -16,7 +16,7 @@ const testimonials = [
     role: "Dermatólogo Certificado · Guadalajara",
     initials: "AR",
     product: "Nabota",
-    color: "#5a9e78",
+    color: "#BBA796",
   },
   {
     text: "Voltena No.2 transformó mi protocolo de aumento de glúteos. La densidad del ácido hialurónico es perfecta para la zona, y los resultados duran significativamente más que otros productos.",
@@ -24,7 +24,7 @@ const testimonials = [
     role: "Cirujana Plástica · Monterrey",
     initials: "CV",
     product: "Voltena No.2",
-    color: "#7c6bbd",
+    color: "#4A3F38",
   },
   {
     text: "La logística y atención son de primer nivel. Pedido, pago, entrega — todo en menos de 48 horas. Pero lo que más valoro es la asesoría técnica: siempre disponibles con conocimiento real.",
@@ -32,7 +32,7 @@ const testimonials = [
     role: "Cosmetóloga Certificada · Puebla",
     initials: "PM",
     product: "Voltena No.3",
-    color: "#4a90b8",
+    color: "#7A6B60",
   },
 ];
 
@@ -53,39 +53,52 @@ function TestCard({ t, i }: { t: typeof testimonials[0]; i: number }) {
   return (
     <div
       ref={ref}
-      className="lgs rounded-2xl p-7 flex flex-col"
+      className="card p-7 flex flex-col"
       style={{
-        borderTop: `2px solid ${t.color}35`,
+        borderTop: `2px solid ${t.color}60`,
         opacity: vis ? 1 : 0,
-        transform: vis ? "none" : "translateY(28px)",
+        transform: vis ? "none" : "translateY(24px)",
         transition: `opacity 0.7s ease ${i * 100}ms, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 100}ms`,
       }}
     >
+      {/* Product tag */}
       <div className="mb-5">
         <span
-          className="font-body px-2.5 py-1 rounded-full border"
-          style={{ fontSize: "9px", letterSpacing: "0.14em", textTransform: "uppercase", color: t.color, borderColor: `${t.color}40` }}
+          className="font-body px-2.5 py-1 rounded-full"
+          style={{
+            fontSize: "9px",
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: t.color,
+            border: `1px solid ${t.color}40`,
+            background: `${t.color}0D`,
+          }}
         >
           {t.product}
         </span>
       </div>
 
-      <p className="font-heading text-white/80 italic flex-1 mb-6" style={{ fontSize: "1rem", lineHeight: 1.65, fontWeight: 400 }}>
-        &ldquo;{t.text}&rdquo;
+      {/* Quote mark */}
+      <span className="font-heading text-taupe-light" style={{ fontSize: "3rem", lineHeight: 0.5, marginBottom: "12px", display: "block", fontStyle: "italic" }}>
+        &ldquo;
+      </span>
+
+      <p className="font-heading text-brand-mid italic flex-1 mb-6" style={{ fontSize: "0.95rem", lineHeight: 1.7, fontWeight: 400 }}>
+        {t.text}
       </p>
 
-      <div className="h-px mb-5" style={{ background: "rgba(255,255,255,0.06)" }} />
+      <div className="h-px mb-5" style={{ background: "rgba(187,167,150,0.25)" }} />
 
       <div className="flex items-center gap-3">
         <div
-          className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 border"
-          style={{ background: `${t.color}15`, borderColor: `${t.color}35` }}
+          className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+          style={{ background: `${t.color}15`, border: `1px solid ${t.color}35` }}
         >
-          <span className="font-heading italic text-white/85" style={{ fontSize: "12px" }}>{t.initials}</span>
+          <span className="font-heading italic" style={{ fontSize: "12px", color: t.color, fontWeight: 400 }}>{t.initials}</span>
         </div>
         <div>
-          <p className="font-body text-white/85 font-medium" style={{ fontSize: "12px" }}>{t.author}</p>
-          <p className="font-body text-white/65" style={{ fontSize: "10px", letterSpacing: "0.06em" }}>{t.role}</p>
+          <p className="font-body text-brand font-medium" style={{ fontSize: "12px" }}>{t.author}</p>
+          <p className="font-body text-muted" style={{ fontSize: "10px", letterSpacing: "0.06em" }}>{t.role}</p>
         </div>
       </div>
     </div>
@@ -94,14 +107,14 @@ function TestCard({ t, i }: { t: typeof testimonials[0]; i: number }) {
 
 export default function Testimonials() {
   return (
-    <section className="py-24 lg:py-32" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+    <section className="py-24 lg:py-32" style={{ background: "#FFFFFF", borderTop: "1px solid rgba(187,167,150,0.2)" }}>
       <div className="max-w-6xl mx-auto px-6 md:px-12">
 
         <div className="text-center mb-14 reveal vis">
-          <p className="font-body text-xs tracking-[0.22em] uppercase mb-4" style={{ color: "#4ecdc4" }}>
+          <p className="font-body text-rose mb-4" style={{ fontSize: "10px", letterSpacing: "0.28em", textTransform: "uppercase" }}>
             Testimonios
           </p>
-          <h2 className="font-heading text-white italic" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 300, lineHeight: 1.1 }}>
+          <h2 className="font-heading text-brand italic" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 400, lineHeight: 1.1 }}>
             Lo que dicen los profesionales
           </h2>
         </div>

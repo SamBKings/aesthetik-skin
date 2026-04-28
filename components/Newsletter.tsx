@@ -16,16 +16,16 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="py-20" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+    <section className="py-20 section-alt" style={{ borderTop: "1px solid rgba(187,167,150,0.2)" }}>
       <div className="max-w-2xl mx-auto px-6 md:px-12 text-center">
 
-        <p className="font-body text-xs tracking-[0.22em] uppercase mb-4" style={{ color: "#00d4e8" }}>
+        <p className="font-body text-rose mb-4" style={{ fontSize: "10px", letterSpacing: "0.28em", textTransform: "uppercase" }}>
           Newsletter
         </p>
-        <h2 className="font-heading text-white italic mb-3" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 300, lineHeight: 1.15 }}>
+        <h2 className="font-heading text-brand italic mb-3" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", fontWeight: 400, lineHeight: 1.15 }}>
           Mantente al día
         </h2>
-        <p className="font-body text-white/75 mb-8" style={{ fontSize: "14px", lineHeight: 1.8 }}>
+        <p className="font-body text-mid mb-8" style={{ fontSize: "14px", lineHeight: 1.8 }}>
           Recibe novedades de productos, promociones y contenido exclusivo para profesionales de la estética.
         </p>
 
@@ -36,25 +36,27 @@ export default function Newsletter() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@clinica.com"
             required
-            className="flex-1 bg-transparent border border-white/10 px-5 py-3 rounded-full font-body text-white placeholder:text-white/25 focus:outline-none focus:border-aq1/50 transition-colors duration-300 text-sm"
-            style={{ minHeight: "52px" }}
+            className="flex-1 bg-white border border-taupe-light/60 px-5 py-3 rounded-full font-body text-brand placeholder:text-muted focus:outline-none focus:border-rose/50 transition-colors duration-300 text-sm"
+            style={{ minHeight: "50px" }}
           />
           <button
             type="submit"
-            className="px-6 py-3 rounded-full font-body text-sm tracking-widest uppercase font-medium transition-all duration-300"
+            className="btn-primary"
             style={{
-              background: sent ? "rgba(37,211,102,0.15)" : "rgba(0,212,232,0.15)",
-              border: `1px solid ${sent ? "rgba(37,211,102,0.4)" : "rgba(0,212,232,0.4)"}`,
-              color: sent ? "#25D366" : "#00d4e8",
-              minHeight: "52px",
+              minHeight: "50px",
               whiteSpace: "nowrap",
+              background: sent ? "rgba(37,211,102,0.15)" : "var(--rose)",
+              border: sent ? "1px solid rgba(37,211,102,0.4)" : "none",
+              color: sent ? "#22c55e" : "#fff",
+              boxShadow: sent ? "none" : "0 4px 16px rgba(190,120,101,0.30)",
+              padding: "12px 24px",
             }}
           >
             {sent ? "¡Listo! ✓" : "Suscribirme"}
           </button>
         </form>
 
-        <p className="font-body text-white/55 mt-4" style={{ fontSize: "11px", letterSpacing: "0.06em" }}>
+        <p className="font-body text-muted mt-4" style={{ fontSize: "11px", letterSpacing: "0.06em" }}>
           Sin spam. Solo contenido relevante para tu práctica.
         </p>
       </div>

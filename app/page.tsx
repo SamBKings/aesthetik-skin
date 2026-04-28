@@ -13,7 +13,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 
 export default function Home() {
   return (
-    <main className="min-h-screen" style={{ background: "#000", color: "#fff" }}>
+    <main className="min-h-screen" style={{ background: "#F4EDE4", color: "#1A1A1A" }}>
       <Navbar />
       <Hero />
       <Products />

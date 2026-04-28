@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import Logo from "./Logo";
 
 const links = [
-  { label: "Productos", href: "#products" },
+  { label: "Productos",   href: "#products" },
   { label: "Por qué Corea", href: "#why" },
-  { label: "Nosotros", href: "#about" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Nosotros",    href: "#about" },
+  { label: "FAQ",         href: "#faq" },
 ];
 
 const WA = "https://wa.me/529612513578?text=" + encodeURIComponent("Hola, quisiera más información sobre sus productos.");
@@ -22,87 +23,117 @@ export default function Navbar() {
 
   return (
     <nav
-      className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 h-16 transition-all duration-500"
+      className="fixed top-0 inset-x-0 z-50 transition-all duration-500"
       style={{
-        background: scrolled ? "rgba(0,0,0,0.8)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
+        background: scrolled ? "rgba(244,237,228,0.92)" : "rgba(244,237,228,0.75)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderBottom: scrolled ? "1px solid rgba(187,167,150,0.3)" : "1px solid transparent",
+        boxShadow: scrolled ? "0 2px 16px rgba(74,63,56,0.07)" : "none",
       }}
     >
-      <a href="#" className="font-heading italic text-2xl tracking-widest text-white select-none">
-        as
-      </a>
+      <div className="max-w-6xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
 
-      <ul className="hidden md:flex items-center gap-1">
-        {links.map((l) => (
-          <li key={l.href}>
-            <a
-              href={l.href}
-              className="px-4 py-2 rounded-full text-xs tracking-widest uppercase text-white/50 hover:text-white hover:bg-white/[0.06] transition-all duration-300 font-body"
-            >
-              {l.label}
-            </a>
-          </li>
-        ))}
-      </ul>
+        {/* Logo */}
+        <a href="#" className="flex items-center gap-2.5 select-none" aria-label="Aesthetik Skin">
+          {/* Mini butterfly mark */}
+          <svg width="22" height="26" viewBox="0 0 72 84" fill="none" aria-hidden="true">
+            <path d="M35 7 C17 14 10 36 15 62 C22 50 31 27 35 7Z" fill="#BBA796" opacity="0.92"/>
+            <path d="M37 7 C55 14 62 36 56 62 C50 50 42 27 37 7Z" fill="#D9CEC3" opacity="0.80"/>
+            <path d="M35 7 C33 22 33 44 36 62 C39 44 40 22 37 7Z" fill="#EDE5DC" opacity="0.65"/>
+            <path d="M36 5 C40 16 32 32 36 48 C38 57 42 64 40 72" stroke="#4A3F38" strokeWidth="1.6" fill="none" strokeLinecap="round"/>
+            <path d="M40 70 C46 65 53 69 49 75 C45 71 42 71 40 72Z" fill="#BBA796" opacity="0.85"/>
+            <circle cx="40" cy="72" r="2.2" fill="#4A3F38"/>
+          </svg>
+          <div>
+            <div className="font-body font-medium text-brand-mid" style={{ fontSize: "13px", letterSpacing: "0.22em", textTransform: "uppercase", lineHeight: 1 }}>
+              Aesthetik
+            </div>
+            <div className="font-body font-light text-mid" style={{ fontSize: "9px", letterSpacing: "0.32em", textTransform: "uppercase", lineHeight: 1.2 }}>
+              Skin
+            </div>
+          </div>
+        </a>
 
-      <a
-        href={WA}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs tracking-widest uppercase font-body font-medium transition-all duration-300"
-        style={{ background: "rgba(0,212,232,0.12)", border: "1px solid rgba(0,212,232,0.35)", color: "#00d4e8" }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(0,212,232,0.22)"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(0,212,232,0.12)"; }}
-      >
-        Contactar
-      </a>
+        {/* Desktop links */}
+        <ul className="hidden md:flex items-center gap-1">
+          {links.map((l) => (
+            <li key={l.href}>
+              <a
+                href={l.href}
+                className="px-4 py-2 rounded-full font-body text-mid hover:text-brand transition-colors duration-300"
+                style={{ fontSize: "11px", letterSpacing: "0.14em", textTransform: "uppercase" }}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
 
-      {/* Mobile hamburger */}
-      <button
-        className="md:hidden flex flex-col gap-1.5 p-2"
-        aria-label="Menú"
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        <span className="block w-5 h-px bg-white/60 transition-all duration-300" style={{ transform: menuOpen ? "rotate(45deg) translate(3px,3px)" : "none" }} />
-        <span className="block w-5 h-px bg-white/60 transition-all duration-300" style={{ opacity: menuOpen ? 0 : 1 }} />
-        <span className="block w-3 h-px bg-white/60 transition-all duration-300" style={{ transform: menuOpen ? "rotate(-45deg) translate(2px,-2px)" : "none", width: menuOpen ? "20px" : "12px" }} />
-      </button>
-
-      {/* Mobile dropdown */}
-      <div
-        className="md:hidden absolute top-16 inset-x-0 py-4 px-6 flex flex-col gap-3 transition-all duration-300 overflow-hidden"
-        style={{
-          background: "rgba(0,0,0,0.92)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          maxHeight: menuOpen ? "300px" : "0",
-          opacity: menuOpen ? 1 : 0,
-          paddingTop: menuOpen ? "16px" : "0",
-          paddingBottom: menuOpen ? "16px" : "0",
-        }}
-      >
-        {links.map((l) => (
-          <a
-            key={l.href}
-            href={l.href}
-            className="block text-sm tracking-widest uppercase text-white/60 hover:text-white py-2 font-body"
-            onClick={() => setMenuOpen(false)}
-          >
-            {l.label}
-          </a>
-        ))}
+        {/* Desktop CTA */}
         <a
           href={WA}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-2 text-center px-5 py-3 rounded-full text-xs tracking-widest uppercase font-body"
-          style={{ background: "rgba(0,212,232,0.15)", border: "1px solid rgba(0,212,232,0.4)", color: "#00d4e8" }}
+          className="hidden md:inline-flex btn-primary"
+          style={{ padding: "10px 22px", fontSize: "10px" }}
         >
-          Contactar por WhatsApp
+          Contactar
         </a>
+
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden flex flex-col gap-1.5 p-2"
+          aria-label="Menú"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <span
+            className="block w-5 h-px transition-all duration-300"
+            style={{ background: "#4A3F38", transform: menuOpen ? "rotate(45deg) translate(3px,3px)" : "none" }}
+          />
+          <span
+            className="block w-5 h-px transition-all duration-300"
+            style={{ background: "#4A3F38", opacity: menuOpen ? 0 : 1 }}
+          />
+          <span
+            className="block h-px transition-all duration-300"
+            style={{ background: "#4A3F38", width: menuOpen ? "20px" : "12px", transform: menuOpen ? "rotate(-45deg) translate(2px,-2px)" : "none" }}
+          />
+        </button>
+      </div>
+
+      {/* Mobile dropdown */}
+      <div
+        className="md:hidden overflow-hidden transition-all duration-300"
+        style={{
+          maxHeight: menuOpen ? "320px" : "0",
+          opacity: menuOpen ? 1 : 0,
+          background: "rgba(244,237,228,0.97)",
+          borderTop: menuOpen ? "1px solid rgba(187,167,150,0.25)" : "none",
+        }}
+      >
+        <div className="px-6 pb-6 pt-4 flex flex-col gap-2">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="block py-3 font-body text-brand-mid hover:text-rose border-b border-taupe-light/30 transition-colors"
+              style={{ fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase" }}
+              onClick={() => setMenuOpen(false)}
+            >
+              {l.label}
+            </a>
+          ))}
+          <a
+            href={WA}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary mt-3 text-center"
+            style={{ padding: "12px 24px", fontSize: "10px" }}
+          >
+            Contactar por WhatsApp
+          </a>
+        </div>
       </div>
     </nav>
   );

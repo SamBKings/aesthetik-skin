@@ -1,4 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="12" fill="#1A1A1A"/>
-  <text x="32" y="44" font-family="Georgia, serif" font-size="26" font-weight="600" fill="#C9A961" text-anchor="middle" letter-spacing="1">AS</text>
+  <rect width="64" height="64" rx="12" fill="#F4EDE4"/>
+  <!-- Butterfly left petal -->
+  <path d="M30 10 C20 14 17 26 19 42 C23 36 27 22 30 10Z" fill="#BBA796" opacity="0.92"/>
+  <!-- Butterfly right petal -->
+  <path d="M34 10 C44 14 47 26 44 42 C41 36 37 22 34 10Z" fill="#D9CEC3" opacity="0.80"/>
+  <!-- S-curve -->
+  <path d="M32 8 C35 16 29 26 32 36 C33 41 35 46 34 52" stroke="#4A3F38" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Dot -->
+  <circle cx="34" cy="52" r="1.8" fill="#4A3F38"/>
 </svg>
