@@ -75,8 +75,8 @@ export const products: Product[] = [
     accentColor: "#5a9e78",
     manufacturer: "Daewoong",
     certifications: "MFDS · FDA · CE",
-    price: 2800,
-    priceDisplay: "$2,800 MXN",
+    price: 1500,
+    priceDisplay: "$1,500 MXN",
   },
   {
     id: "innotox",
@@ -95,8 +95,8 @@ export const products: Product[] = [
     accentColor: "#c4822a",
     manufacturer: "Medytox Inc.",
     certifications: "MFDS",
-    price: 2200,
-    priceDisplay: "$2,200 MXN",
+    price: 1350,
+    priceDisplay: "$1,350 MXN",
   },
   {
     id: "liztox",
@@ -115,8 +115,8 @@ export const products: Product[] = [
     accentColor: "#7c6bbd",
     manufacturer: "Huons Biopharma",
     certifications: "MFDS · KFDA",
-    price: 2400,
-    priceDisplay: "$2,400 MXN",
+    price: 900,
+    priceDisplay: "$900 MXN",
   },
 
   /* ── VOLTENA ──────────────────────────────────────────── */
@@ -138,8 +138,8 @@ export const products: Product[] = [
     accentColor: "#c4822a",
     manufacturer: "Corea del Sur",
     certifications: "Made in Korea",
-    price: 3500,
-    priceDisplay: "$3,500 MXN",
+    price: 2300,
+    priceDisplay: "$2,300 MXN",
   },
   {
     id: "voltena2",
@@ -158,8 +158,8 @@ export const products: Product[] = [
     accentColor: "#7c6bbd",
     manufacturer: "Corea del Sur",
     certifications: "Made in Korea",
-    price: 4800,
-    priceDisplay: "$4,800 MXN",
+    price: 2800,
+    priceDisplay: "$2,800 MXN",
   },
   {
     id: "voltena3",
@@ -178,8 +178,8 @@ export const products: Product[] = [
     accentColor: "#4a90b8",
     manufacturer: "Corea del Sur",
     certifications: "Made in Korea",
-    price: 1200,
-    priceDisplay: "$1,200 MXN",
+    price: 600,
+    priceDisplay: "$600 MXN",
   },
 
   /* ── RELLENOS ─────────────────────────────────────────── */
@@ -201,8 +201,8 @@ export const products: Product[] = [
     accentColor: "#e8a87c",
     manufacturer: "Across Inc.",
     certifications: "CE · FDA",
-    price: 1800,
-    priceDisplay: "$1,800 MXN",
+    price: 1100,
+    priceDisplay: "$1,100 MXN",
   },
   {
     id: "elasty",
@@ -221,8 +221,8 @@ export const products: Product[] = [
     accentColor: "#9eb8d8",
     manufacturer: "Dongbang Medical",
     certifications: "CE",
-    price: 2000,
-    priceDisplay: "$2,000 MXN",
+    price: 1100,
+    priceDisplay: "$1,100 MXN",
   },
   {
     id: "juvederm",
@@ -241,8 +241,8 @@ export const products: Product[] = [
     accentColor: "#a87cb8",
     manufacturer: "Allergan",
     certifications: "CE · FDA",
-    price: 3200,
-    priceDisplay: "$3,200 MXN",
+    price: 4200,
+    priceDisplay: "$4,200 MXN",
   },
   {
     id: "revolax",
@@ -261,8 +261,8 @@ export const products: Product[] = [
     accentColor: "#78b896",
     manufacturer: "Croma Pharma",
     certifications: "CE · MFDS",
-    price: 1600,
-    priceDisplay: "$1,600 MXN",
+    price: 1020,
+    priceDisplay: "$1,020 MXN",
   },
 
   /* ── MESOTERAPIA & OTROS ──────────────────────────────── */
@@ -283,8 +283,8 @@ export const products: Product[] = [
     accentColor: "#d4a0a0",
     manufacturer: "Corea del Sur",
     certifications: "CE",
-    price: 2200,
-    priceDisplay: "$2,200 MXN",
+    price: 700,
+    priceDisplay: "$700 MXN",
   },
   {
     id: "hyaron",
@@ -303,8 +303,8 @@ export const products: Product[] = [
     accentColor: "#88b8d8",
     manufacturer: "Dongkook Pharma",
     certifications: "MFDS · FDA",
-    price: 1400,
-    priceDisplay: "$1,400 MXN",
+    price: 1950,
+    priceDisplay: "$1,950 MXN",
   },
   {
     id: "muchcaine",
@@ -323,8 +323,8 @@ export const products: Product[] = [
     accentColor: "#d4d488",
     manufacturer: "Internacional",
     certifications: "Certificado",
-    price: 800,
-    priceDisplay: "$800 MXN",
+    price: 750,
+    priceDisplay: "$750 MXN",
   },
   {
     id: "liporase",
@@ -343,8 +343,8 @@ export const products: Product[] = [
     accentColor: "#b8c4a0",
     manufacturer: "DnewPharm",
     certifications: "Certificado",
-    price: 1200,
-    priceDisplay: "$1,200 MXN",
+    price: 1500,
+    priceDisplay: "$1,500 MXN",
   },
 ];
 
