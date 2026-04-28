@@ -7,6 +7,7 @@ import Certifications from "@/components/Certifications";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import CTAContact from "@/components/CTAContact";
+import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -22,6 +23,7 @@ export default function Home() {
       <Testimonials />
       <FAQ />
       <CTAContact />
+      <Newsletter />
       <Footer />
       <WhatsAppButton />
     </main>

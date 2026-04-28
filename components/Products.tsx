@@ -59,13 +59,6 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
           loading="lazy"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
-        {product.certifications && (
-          <div className="absolute top-3 right-3 px-2 py-1 rounded-full lgs">
-            <span className="font-body text-white/40" style={{ fontSize: "9px", letterSpacing: "0.1em" }}>
-              {product.certifications.split(" · ")[0]}
-            </span>
-          </div>
-        )}
       </div>
 
       {/* Content */}
