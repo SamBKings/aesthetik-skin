@@ -131,13 +131,14 @@ export default function Products() {
         </div>
 
         {/* Tabs */}
-        <div className="flex justify-center mb-12 overflow-x-auto no-scrollbar">
-          <div className="flex gap-0 border-b border-white/[0.08]">
+        <div className="mb-12 overflow-x-auto no-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
+          <div className="flex gap-0 border-b border-white/[0.08] w-max md:w-full md:justify-center mx-auto">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveTab(cat.id)}
                 className={`tab-btn${activeTab === cat.id ? " active" : ""}`}
+                style={{ fontSize: "11px", padding: "10px 16px" }}
               >
                 {cat.label}
               </button>

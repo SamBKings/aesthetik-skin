@@ -35,10 +35,10 @@ export interface Category {
   label: string;
 }
 export const categories: Category[] = [
-  { id: "toxinas",  label: "Toxinas Botulínicas" },
+  { id: "toxinas",  label: "Toxinas" },
   { id: "voltena",  label: "Voltena" },
-  { id: "rellenos", label: "Rellenos Dérmicos" },
-  { id: "meso",     label: "Mesoterapia & Otros" },
+  { id: "rellenos", label: "Rellenos" },
+  { id: "meso",     label: "Mesoterapia" },
 ];
 
 /* ── ALL PRODUCTS ──────────────────────────────────────────── */

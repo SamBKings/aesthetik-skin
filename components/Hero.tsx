@@ -109,23 +109,42 @@ export default function Hero() {
         </div>
 
         {/* Trust badges */}
-        <div ref={badgesRef} className="flex flex-wrap justify-center gap-2">
-          {badges.map((b, i) => (
-            <span
-              key={i}
-              className="font-body px-3 py-1.5 rounded-full text-white/55 border border-white/[0.15]"
-              style={{ fontSize: "10px", letterSpacing: "0.14em" }}
-            >
-              {b}
-            </span>
-          ))}
+        <div ref={badgesRef} className="flex flex-wrap justify-center gap-2 mb-8">
+          <span className="font-body px-4 py-2 rounded-full text-white border border-white/25"
+            style={{ fontSize: "11px", letterSpacing: "0.1em" }}>
+            MFDS
+          </span>
+          <span className="font-body px-4 py-2 rounded-full text-white border border-white/25"
+            style={{ fontSize: "11px", letterSpacing: "0.1em" }}>
+            FDA
+          </span>
+          <span className="font-body px-4 py-2 rounded-full text-white border border-white/25"
+            style={{ fontSize: "11px", letterSpacing: "0.1em" }}>
+            CE
+          </span>
+          <span className="font-body px-4 py-2 rounded-full text-white border border-white/25"
+            style={{ fontSize: "11px", letterSpacing: "0.1em" }}>
+            🇰🇷 Made in Korea
+          </span>
+          <span className="font-body px-4 py-2 rounded-full text-white border border-white/25"
+            style={{ fontSize: "11px", letterSpacing: "0.1em" }}>
+            Voltena · Distribuidor autorizado
+          </span>
         </div>
+
+        {/* Explorar CTA */}
+        <a
+          href="#products"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-body text-base font-medium text-white border border-white/30 hover:border-white/60 hover:bg-white/[0.06] transition-all duration-300"
+          style={{ letterSpacing: "0.04em" }}
+        >
+          Explorar colección ↓
+        </a>
       </div>
 
-      {/* Scroll hint */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/25">
-        <span className="font-body" style={{ fontSize: "9px", letterSpacing: "0.2em" }}>EXPLORAR</span>
-        <span className="block w-px h-8" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.3), transparent)" }} />
+      {/* Scroll hint — hidden, replaced by button */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/15 pointer-events-none">
+        <span className="block w-px h-6" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.2), transparent)" }} />
       </div>
     </section>
   );
