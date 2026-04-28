@@ -95,8 +95,8 @@ export default function Hero() {
       {/* Decorative line top */}
       <div className="absolute top-0 left-0 w-full h-px" style={{ background:"linear-gradient(to right, transparent, rgba(187,167,150,0.45), transparent)" }} />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-20">
-        <div className="max-w-2xl">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 pt-32 pb-20">
+        <div className="max-w-2xl" style={{ paddingTop: "8px" }}>
 
           {/* Eyebrow */}
           <div className="flex items-center gap-3 mb-8 fu go" style={{ animationDelay:"100ms" }}>

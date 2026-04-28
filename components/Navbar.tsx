@@ -15,7 +15,6 @@ function LogoMark() {
   const [imgError, setImgError] = useState(false);
 
   if (imgError) {
-    /* Fallback texto elegante si la imagen no existe aún */
     return (
       <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
         <span style={{ fontFamily: "var(--font-montserrat), system-ui", fontSize: "14px", letterSpacing: "0.24em", fontWeight: 500, color: "#1A1A1A", textTransform: "uppercase" }}>
@@ -32,11 +31,18 @@ function LogoMark() {
     <Image
       src="/assets/logo.png"
       alt="Aesthetik Skin"
-      width={130}
-      height={44}
+      width={200}
+      height={74}
       priority
       onError={() => setImgError(true)}
-      style={{ height: "38px", width: "auto", objectFit: "contain" }}
+      style={{
+        height: "62px",
+        width: "auto",
+        objectFit: "contain",
+        /* blend-mode multiply hace que el fondo crema del logo
+           se fusione perfectamente con el fondo crema de la navbar */
+        mixBlendMode: "multiply",
+      }}
     />
   );
 }
@@ -62,7 +68,7 @@ export default function Navbar() {
         boxShadow: scrolled ? "0 2px 16px rgba(74,63,56,0.07)" : "none",
       }}
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
 
         <a href="#" className="flex items-center select-none" aria-label="Aesthetik Skin">
           <LogoMark />
