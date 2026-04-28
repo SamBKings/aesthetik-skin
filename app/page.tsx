@@ -10,22 +10,27 @@ import CTAContact from "@/components/CTAContact";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Cart from "@/components/Cart";
+import { CartProvider } from "@/context/CartContext";
 
 export default function Home() {
   return (
-    <main className="min-h-screen" style={{ background: "#F4EDE4", color: "#1A1A1A" }}>
-      <Navbar />
-      <Hero />
-      <Products />
-      <WhyKorean />
-      <AboutUs />
-      <Certifications />
-      <Testimonials />
-      <FAQ />
-      <CTAContact />
-      <Newsletter />
-      <Footer />
-      <WhatsAppButton />
-    </main>
+    <CartProvider>
+      <main className="min-h-screen" style={{ background: "#F4EDE4", color: "#1A1A1A" }}>
+        <Navbar />
+        <Hero />
+        <Products />
+        <WhyKorean />
+        <AboutUs />
+        <Certifications />
+        <Testimonials />
+        <FAQ />
+        <CTAContact />
+        <Newsletter />
+        <Footer />
+        <WhatsAppButton />
+        <Cart />
+      </main>
+    </CartProvider>
   );
 }

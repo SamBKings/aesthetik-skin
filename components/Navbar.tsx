@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useCart } from "@/context/CartContext";
 
 const links = [
   { label: "Productos",     href: "#products" },
@@ -47,6 +48,28 @@ function LogoMark() {
   );
 }
 
+function CartIcon() {
+  const { count, openCart } = useCart();
+  return (
+    <button
+      onClick={openCart}
+      aria-label={`Carrito (${count})`}
+      style={{ position: "relative", width: 40, height: 40, background: "transparent", border: "1px solid rgba(187,167,150,0.4)", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#4A3F38", flexShrink: 0 }}
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      {count > 0 && (
+        <span style={{ position: "absolute", top: -4, right: -4, minWidth: 18, height: 18, background: "#BE7865", color: "#fff", borderRadius: "9999px", fontSize: "9px", fontFamily: "var(--font-montserrat)", fontWeight: 600, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 4px", letterSpacing: "0.02em" }}>
+          {count > 99 ? "99+" : count}
+        </span>
+      )}
+    </button>
+  );
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -89,27 +112,33 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Desktop CTA */}
-        <a
-          href={WA}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:inline-flex btn-primary"
-          style={{ padding: "10px 22px", fontSize: "10px" }}
-        >
-          Contactar
-        </a>
+        {/* Desktop CTA + cart */}
+        <div className="hidden md:flex items-center gap-3">
+          <CartIcon />
+          <a
+            href={WA}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+            style={{ padding: "10px 22px", fontSize: "10px" }}
+          >
+            Contactar
+          </a>
+        </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden flex flex-col gap-1.5 p-2"
-          aria-label="Menú"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <span className="block w-5 h-px transition-all duration-300" style={{ background: "#4A3F38", transform: menuOpen ? "rotate(45deg) translate(3px,3px)" : "none" }} />
-          <span className="block w-5 h-px transition-all duration-300" style={{ background: "#4A3F38", opacity: menuOpen ? 0 : 1 }} />
-          <span className="block h-px transition-all duration-300"    style={{ background: "#4A3F38", width: menuOpen ? "20px" : "12px", transform: menuOpen ? "rotate(-45deg) translate(2px,-2px)" : "none" }} />
-        </button>
+        {/* Mobile: cart + hamburger */}
+        <div className="md:hidden flex items-center gap-2">
+          <CartIcon />
+          <button
+            className="flex flex-col gap-1.5 p-2"
+            aria-label="Menú"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span className="block w-5 h-px transition-all duration-300" style={{ background: "#4A3F38", transform: menuOpen ? "rotate(45deg) translate(3px,3px)" : "none" }} />
+            <span className="block w-5 h-px transition-all duration-300" style={{ background: "#4A3F38", opacity: menuOpen ? 0 : 1 }} />
+            <span className="block h-px transition-all duration-300"    style={{ background: "#4A3F38", width: menuOpen ? "20px" : "12px", transform: menuOpen ? "rotate(-45deg) translate(2px,-2px)" : "none" }} />
+          </button>
+        </div>
       </div>
 
       {/* Mobile dropdown */}

@@ -2,10 +2,17 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { categories, productsByCategory, waLink, type Product } from "@/lib/products";
+import { useCart } from "@/context/CartContext";
+
+function fmt(n: number) {
+  return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n);
+}
 
 function ProductCard({ product, delay = 0 }: { product: Product; delay?: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [added, setAdded] = useState(false);
+  const { addItem } = useCart();
 
   useEffect(() => {
     const el = cardRef.current;
@@ -76,7 +83,7 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
         </p>
 
         {product.tags && (
-          <div className="flex flex-wrap gap-1.5 mb-4">
+          <div className="flex flex-wrap gap-1.5 mb-3">
             {product.tags.slice(0,3).map(t => (
               <span key={t} className="px-2.5 py-0.5 rounded-full font-body text-mid"
                 style={{ fontSize:"10px", background:"rgba(187,167,150,0.12)", border:"1px solid rgba(187,167,150,0.3)" }}>
@@ -86,16 +93,36 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
           </div>
         )}
 
-        <a
-          href={waLink(product.waMessage)}
-          target="_blank" rel="noopener noreferrer"
-          className="mt-auto inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full font-body font-medium transition-all duration-300"
-          style={{ fontSize:"10px", letterSpacing:"0.14em", textTransform:"uppercase", background:"var(--rose)", color:"#fff", boxShadow:"0 3px 12px rgba(190,120,101,0.25)" }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background="var(--rose-dark)"; (e.currentTarget as HTMLElement).style.transform="translateY(-1px)"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background="var(--rose)"; (e.currentTarget as HTMLElement).style.transform="none"; }}
-        >
-          Cotizar
-        </a>
+        {/* Price */}
+        <p className="font-heading text-rose mb-3" style={{ fontSize:"1.15rem", fontWeight:400, fontStyle:"italic" }}>
+          {fmt(product.price)}
+          <span className="font-body text-muted" style={{ fontSize:"9px", letterSpacing:"0.1em", fontStyle:"normal", marginLeft:"4px" }}>MXN / pieza</span>
+        </p>
+
+        {/* Buttons */}
+        <div className="flex flex-col gap-2 mt-auto">
+          <button
+            onClick={() => {
+              addItem(product);
+              setAdded(true);
+              setTimeout(() => setAdded(false), 1600);
+            }}
+            className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full font-body font-medium transition-all duration-300"
+            style={{ fontSize:"10px", letterSpacing:"0.14em", textTransform:"uppercase", background: added ? "var(--rose-dark)" : "var(--rose)", color:"#fff", boxShadow:"0 3px 12px rgba(190,120,101,0.25)", border:"none", cursor:"pointer" }}
+          >
+            {added ? "✓ Agregado" : "Agregar al carrito"}
+          </button>
+          <a
+            href={waLink(product.waMessage)}
+            target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 py-2 px-4 rounded-full font-body transition-all duration-300"
+            style={{ fontSize:"10px", letterSpacing:"0.14em", textTransform:"uppercase", background:"transparent", color:"var(--rose)", border:"1px solid rgba(190,120,101,0.4)" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background="rgba(190,120,101,0.06)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background="transparent"; }}
+          >
+            Cotizar por WhatsApp
+          </a>
+        </div>
       </div>
     </div>
   );
