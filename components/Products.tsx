@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { categories, productsByCategory, waLink, type Product } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
 
@@ -122,6 +123,13 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
           >
             Cotizar por WhatsApp
           </a>
+          <Link
+            href={`/productos/${product.id}`}
+            className="inline-flex items-center justify-center gap-1 font-body"
+            style={{ fontSize:"9px", letterSpacing:"0.14em", textTransform:"uppercase", color:"#9E9087", textDecoration:"none", paddingTop:"4px" }}
+          >
+            Ver ficha completa →
+          </Link>
         </div>
       </div>
     </div>
