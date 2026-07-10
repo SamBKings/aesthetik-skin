@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://aesthetikskin.com/blog" },
 };
 
-const categories = [...new Set(blogPosts.map(p => p.category))];
+const categories = Array.from(new Set(blogPosts.map(p => p.category)));
 
 export default function BlogPage() {
   const [featured, ...rest] = blogPosts;
