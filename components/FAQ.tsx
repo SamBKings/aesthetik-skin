@@ -30,6 +30,26 @@ const faqs = [
     q: "¿Tienen precios de mayoreo o para clínicas?",
     a: "Sí. Ofrecemos condiciones especiales para clínicas, cadenas de spa médico y profesionales con pedidos frecuentes o de volumen. Contáctanos directamente para conocer nuestro esquema por volumen.",
   },
+  {
+    q: "¿Cuánto tarda el envío?",
+    a: "La mayoría de los pedidos se entregan en 1 a 3 días hábiles dentro de la República Mexicana. Ciudad de México y zona metropolitana suelen recibir en 24 horas. Zonas más alejadas pueden tomar hasta 5 días hábiles. Te enviamos número de rastreo en cuanto sale el paquete.",
+  },
+  {
+    q: "¿Emiten factura (CFDI)?",
+    a: "Sí, emitimos factura electrónica (CFDI 4.0) para personas físicas con actividad empresarial y personas morales. Solo indícanos tus datos fiscales al momento de hacer el pedido y la enviamos al correo registrado en un máximo de 24 horas después de confirmado el pago.",
+  },
+  {
+    q: "¿Qué pasa si mi pedido llega dañado o incompleto?",
+    a: "En ese caso te cubrimos al 100%. Toma fotos del paquete antes de abrirlo y notifícanos dentro de las 24 horas siguientes a la entrega por WhatsApp. Revisamos el caso y gestionamos el reenvío o reembolso sin costo adicional para ti.",
+  },
+  {
+    q: "¿Hay un pedido mínimo?",
+    a: "No exigimos un mínimo estricto para pedidos individuales. Sin embargo, para acceder a precios de mayoreo o condiciones especiales de clínica sí se requieren cantidades mínimas que varía por producto. Consúltanos por WhatsApp para un presupuesto personalizado.",
+  },
+  {
+    q: "¿Tienen stock disponible en todo momento?",
+    a: "Manejamos inventario constante de nuestros productos principales (Nabota, Voltena y Genefill). En temporada alta o para pedidos de alto volumen te recomendamos confirmar disponibilidad antes de hacer el pedido. Nuestro equipo te responde en minutos por WhatsApp.",
+  },
 ];
 
 function FAQItem({ faq, index }: { faq: { q: string; a: string }; index: number }) {
@@ -84,7 +104,7 @@ function FAQItem({ faq, index }: { faq: { q: string; a: string }; index: number 
 
       <div
         className="overflow-hidden"
-        style={{ maxHeight: open ? "200px" : "0", transition: "max-height 0.4s cubic-bezier(0.16,1,0.3,1)" }}
+        style={{ maxHeight: open ? "300px" : "0", transition: "max-height 0.4s cubic-bezier(0.16,1,0.3,1)" }}
       >
         <p className="font-body text-mid pb-6 pr-12" style={{ fontSize: "13px", lineHeight: 1.8 }}>
           {faq.a}
