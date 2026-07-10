@@ -93,7 +93,7 @@ export default function Footer() {
                 fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               }}
             >
-              +52 961 251 3578
+              +52 813 418 8472
             </a>
           </div>
 

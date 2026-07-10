@@ -58,7 +58,7 @@ export default function CTAContact() {
                   <span style={{ color: "#25D366", fontSize: "18px" }}>💬</span>
                 </div>
                 <div>
-                  <p className="font-body text-brand font-medium" style={{ fontSize: "13px" }}>+52 961 251 3578</p>
+                  <p className="font-body text-brand font-medium" style={{ fontSize: "13px" }}>+52 813 418 8472</p>
                   <p className="font-body text-muted" style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" }}>WhatsApp · Respuesta inmediata</p>
                 </div>
               </a>
