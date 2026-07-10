@@ -57,9 +57,8 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
     >
-      {/* Image */}
-      <div className="relative h-52 flex items-center justify-center overflow-hidden" style={{ background:"#FDFAF7" }}>
-        {/* Subtle accent line top */}
+      {/* Image — clickable → product page */}
+      <Link href={`/productos/${product.id}`} className="relative h-52 flex items-center justify-center overflow-hidden" style={{ background:"#FDFAF7", display:"block" }}>
         <div className="absolute top-0 left-0 right-0 h-0.5 opacity-70" style={{ background: product.accentColor }} />
         <Image
           src={product.image}
@@ -69,7 +68,7 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
           loading="lazy"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
-      </div>
+      </Link>
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-1" style={{ borderTop:"1px solid rgba(187,167,150,0.15)" }}>

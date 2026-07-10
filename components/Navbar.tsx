@@ -4,10 +4,11 @@ import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 
 const links = [
-  { label: "Productos",     href: "#products" },
-  { label: "Por qué Corea", href: "#why" },
-  { label: "Nosotros",      href: "#about" },
-  { label: "FAQ",           href: "#faq" },
+  { label: "Catálogo",      href: "/productos" },
+  { label: "Blog",          href: "/blog" },
+  { label: "Por qué Corea", href: "/#why" },
+  { label: "Nosotros",      href: "/#about" },
+  { label: "FAQ",           href: "/#faq" },
 ];
 
 const WA = "https://wa.me/528134188472?text=" + encodeURIComponent("Hola, quisiera más información sobre sus productos.");

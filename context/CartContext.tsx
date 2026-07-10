@@ -1,11 +1,10 @@
 "use client";
 import { createContext, useContext, useState, useCallback, ReactNode } from "react";
-import { type Product, getVolumeDiscount, calcDiscountedPrice } from "@/lib/products";
+import { type Product } from "@/lib/products";
 
 export interface CartItem {
   product: Product;
   qty: number;
-  unitPrice: number;   // after volume discount
   lineTotal: number;
 }
 
@@ -25,8 +24,7 @@ interface CartContextValue {
 const CartContext = createContext<CartContextValue | null>(null);
 
 function buildItem(product: Product, qty: number): CartItem {
-  const unitPrice = calcDiscountedPrice(product.price, qty);
-  return { product, qty, unitPrice, lineTotal: unitPrice * qty };
+  return { product, qty, lineTotal: product.price * qty };
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -41,9 +39,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const existing = prev.find(i => i.product.id === product.id);
       if (existing) {
         const newQty = existing.qty + 1;
-        return prev.map(i =>
-          i.product.id === product.id ? buildItem(product, newQty) : i
-        );
+        return prev.map(i => i.product.id === product.id ? buildItem(product, newQty) : i);
       }
       return [...prev, buildItem(product, 1)];
     });
@@ -59,16 +55,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setItems(prev => prev.filter(i => i.product.id !== productId));
       return;
     }
-    setItems(prev =>
-      prev.map(i =>
-        i.product.id === productId ? buildItem(i.product, qty) : i
-      )
-    );
+    setItems(prev => prev.map(i => i.product.id === productId ? buildItem(i.product, qty) : i));
   }, []);
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  // Recalculate all items when quantities change (volume discount is per-item qty)
   const count    = items.reduce((s, i) => s + i.qty, 0);
   const subtotal = items.reduce((s, i) => s + i.lineTotal, 0);
 
