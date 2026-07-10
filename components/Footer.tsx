@@ -21,7 +21,7 @@ const navSections = [
     links: [
       { label: "Preguntas Frecuentes", href: "#faq" },
       { label: "Contacto",             href: "#contact" },
-      { label: "WhatsApp",             href: "https://wa.me/529612513578" },
+      { label: "WhatsApp",             href: "https://wa.me/528134188472" },
     ],
   },
 ];
@@ -83,7 +83,7 @@ export default function Footer() {
             </p>
 
             <a
-              href="https://wa.me/529612513578?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n."
+              href="https://wa.me/528134188472?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-[#25D366]/25 text-[#25D366] hover:border-[#25D366]/50 transition-colors"

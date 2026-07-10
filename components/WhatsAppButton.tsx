@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const WA = "https://wa.me/529612513578?text=" + encodeURIComponent("Hola, me gustaría obtener información sobre sus productos Voltena / Nabota.");
+const WA = "https://wa.me/528134188472?text=" + encodeURIComponent("Hola, me gustaría obtener información sobre sus productos Voltena / Nabota.");
 
 export default function WhatsAppButton() {
   const [visible, setVisible] = useState(false);

@@ -97,7 +97,7 @@ export default function SuccessPage() {
             Volver al inicio
           </a>
           <a
-            href={"https://wa.me/529612513578?text=" + encodeURIComponent("Hola, acabo de realizar un pago en línea y quisiera confirmar mi pedido.")}
+            href={"https://wa.me/528134188472?text=" + encodeURIComponent("Hola, acabo de realizar un pago en línea y quisiera confirmar mi pedido.")}
             target="_blank"
             rel="noopener noreferrer"
             style={{

@@ -181,7 +181,7 @@ export default function Products() {
             ¿Buscas algo específico? Nuestro equipo te asesora sin compromiso.
           </p>
           <a
-            href={"https://wa.me/529612513578?text=" + encodeURIComponent("Hola, me gustaría recibir asesoría personalizada.")}
+            href={"https://wa.me/528134188472?text=" + encodeURIComponent("Hola, me gustaría recibir asesoría personalizada.")}
             target="_blank" rel="noopener noreferrer"
             className="btn-ghost"
           >

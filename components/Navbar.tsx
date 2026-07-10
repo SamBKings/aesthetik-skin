@@ -10,7 +10,7 @@ const links = [
   { label: "FAQ",           href: "#faq" },
 ];
 
-const WA = "https://wa.me/529612513578?text=" + encodeURIComponent("Hola, quisiera más información sobre sus productos.");
+const WA = "https://wa.me/528134188472?text=" + encodeURIComponent("Hola, quisiera más información sobre sus productos.");
 
 function LogoMark() {
   const [imgError, setImgError] = useState(false);

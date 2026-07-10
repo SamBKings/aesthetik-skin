@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: "Aesthetik Skin",
               description: "Distribuidores autorizados de Voltena y Nabota en México.",
               url: "https://aesthetikskin.com",
-              telephone: "+529612513578",
+              telephone: "+528134188472",
               address: { "@type": "PostalAddress", addressCountry: "MX" },
             }),
           }}

@@ -348,7 +348,7 @@ export const products: Product[] = [
   },
 ];
 
-export const WA_NUMBER = "529612513578";
+export const WA_NUMBER = "528134188472";
 export function waLink(message: string) {
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
 }

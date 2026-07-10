@@ -113,7 +113,7 @@ export default function FAQ() {
                 ¿No encuentras lo que buscas? Contáctanos directamente por WhatsApp.
               </p>
               <a
-                href={"https://wa.me/529612513578?text=" + encodeURIComponent("Hola, tengo una pregunta sobre sus productos.")}
+                href={"https://wa.me/528134188472?text=" + encodeURIComponent("Hola, tengo una pregunta sobre sus productos.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-ghost"

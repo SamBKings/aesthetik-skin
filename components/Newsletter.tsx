@@ -9,7 +9,7 @@ export default function Newsletter() {
     e.preventDefault();
     if (!email) return;
     const msg = `Hola, me gustaría suscribirme al newsletter de Aesthetik Skin.\n\nMi correo es: ${email}`;
-    window.open("https://wa.me/529612513578?text=" + encodeURIComponent(msg), "_blank");
+    window.open("https://wa.me/528134188472?text=" + encodeURIComponent(msg), "_blank");
     setSent(true);
     setEmail("");
     setTimeout(() => setSent(false), 5000);

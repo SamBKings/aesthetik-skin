@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 const ThreeBg = dynamic(() => import("./ThreeBg"), { ssr: false });
 
-const WA = "https://wa.me/529612513578?text=" + encodeURIComponent("Hola, me interesa cotizar productos Voltena.");
+const WA = "https://wa.me/528134188472?text=" + encodeURIComponent("Hola, me interesa cotizar productos Voltena.");
 
 const stats = [
   { value: "14",   label: "Productos", end: 14, prefix: "", suffix: "" },
