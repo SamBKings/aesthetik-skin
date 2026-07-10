@@ -14,15 +14,13 @@ export function generateStaticParams() {
 }
 
 /* ── SEO metadata per product ──────────────────────────────── */
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const product = products.find(p => p.id === slug);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const product = products.find(p => p.id === params.slug);
   if (!product) return {};
 
   const title = `${product.name} — ${product.tagline} | Aesthetik Skin`;
   const description = product.description + " Distribuidor autorizado en México. Envío a todo el país.";
   const url = `https://aesthetikskin.com/productos/${product.id}`;
-  const imageUrl = `https://aesthetikskin.com${product.image}`;
 
   return {
     title,
@@ -35,19 +33,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: "website",
       locale: "es_MX",
       siteName: "Aesthetik Skin",
-      images: [{ url: imageUrl, width: 800, height: 800, alt: product.name }],
+      images: [{ url: `https://aesthetikskin.com${product.image}`, width: 800, height: 800, alt: product.name }],
     },
     alternates: { canonical: url },
   };
 }
 
 /* ── Page ──────────────────────────────────────────────────── */
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const product = products.find(p => p.id === slug);
+export default function ProductPage({ params }: { params: { slug: string } }) {
+  const product = products.find(p => p.id === params.slug);
   if (!product) notFound();
 
-  const categoryProducts = products.filter(p => p.categoryId === product.categoryId && p.id !== product.id).slice(0, 3);
+  const categoryProducts = products
+    .filter(p => p.categoryId === product.categoryId && p.id !== product.id)
+    .slice(0, 3);
 
   const schema = {
     "@context": "https://schema.org",
@@ -77,24 +76,27 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "20px 24px 0" }}>
             <nav aria-label="Breadcrumb">
               <ol style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center", listStyle: "none", padding: 0, margin: 0 }}>
-                {[
+                {([
                   { label: "Inicio", href: "/" },
                   { label: "Catálogo", href: "/#products" },
-                  { label: product.category, href: `/#products` },
-                  { label: product.name, href: "#" },
-                ].map((crumb, i, arr) => (
+                  { label: product.category },
+                  { label: product.name },
+                ] as { label: string; href?: string }[]).map((crumb, i, arr) => (
                   <li key={i} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    {i < arr.length - 1 ? (
+                    {crumb.href ? (
                       <>
                         <Link href={crumb.href} style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#9E9087", textDecoration: "none" }}>
                           {crumb.label}
                         </Link>
                         <span style={{ color: "#BBA796", fontSize: "10px" }}>›</span>
                       </>
+                    ) : i < arr.length - 1 ? (
+                      <>
+                        <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#9E9087" }}>{crumb.label}</span>
+                        <span style={{ color: "#BBA796", fontSize: "10px" }}>›</span>
+                      </>
                     ) : (
-                      <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#4A3F38" }}>
-                        {crumb.label}
-                      </span>
+                      <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#4A3F38" }}>{crumb.label}</span>
                     )}
                   </li>
                 ))}
@@ -138,21 +140,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
             {/* Info panel */}
             <div>
-              {/* Eyebrow */}
               <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", letterSpacing: "0.28em", textTransform: "uppercase", color: "#BE7865", marginBottom: "12px" }}>
                 {product.tagline}
               </p>
-
-              {/* Name */}
               <h1 style={{ fontFamily: "var(--font-playfair)", fontSize: "clamp(2.2rem, 5vw, 3.5rem)", fontWeight: 400, fontStyle: "italic", color: "#1A1A1A", lineHeight: 1.1, marginBottom: "8px" }}>
                 {product.name}
               </h1>
-
               <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "0.14em", textTransform: "uppercase", color: "#BBA796", marginBottom: "24px" }}>
                 {product.category}
               </p>
-
-              {/* Description */}
               <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "14px", lineHeight: 1.85, color: "#7A6B60", marginBottom: "32px" }}>
                 {product.body ?? product.description}
               </p>
@@ -176,16 +172,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 </ul>
               </div>
 
-              {/* Presentation */}
+              {/* Presentation badge */}
               <div style={{ padding: "12px 16px", borderRadius: "10px", background: "rgba(187,167,150,0.1)", border: "1px solid rgba(187,167,150,0.25)", marginBottom: "28px", display: "inline-flex", gap: "8px", alignItems: "center" }}>
                 <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#9E9087" }}>Presentación</span>
                 <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "12px", fontWeight: 500, color: "#1A1A1A" }}>{product.presentation}</span>
               </div>
 
-              {/* Divider */}
               <div style={{ height: "1px", background: "rgba(187,167,150,0.3)", marginBottom: "28px" }} />
 
-              {/* Interactive actions */}
+              {/* Client-side cart/WA buttons */}
               <ProductActions product={product} />
             </div>
           </section>
@@ -223,7 +218,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </section>
           )}
 
-          {/* ── Related products ──────────────────────────────── */}
+          {/* ── Related products ─────────────────────────────── */}
           {categoryProducts.length > 0 && (
             <section style={{ padding: "64px 24px", background: "#FFFFFF" }}>
               <div style={{ maxWidth: "1152px", margin: "0 auto" }}>
@@ -235,20 +230,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 </h2>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "24px" }}>
                   {categoryProducts.map(p => (
-                    <Link key={p.id} href={`/productos/${p.id}`} style={{ textDecoration: "none" }}>
-                      <div style={{ borderRadius: "16px", overflow: "hidden", background: "#FDFAF7", border: "1px solid rgba(187,167,150,0.2)", boxShadow: "0 4px 16px rgba(74,63,56,0.06)", transition: "transform 0.3s, box-shadow 0.3s" }}
-                        onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.transform = "translateY(-4px)"; el.style.boxShadow = "0 12px 32px rgba(74,63,56,0.12)"; }}
-                        onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.transform = "none"; el.style.boxShadow = "0 4px 16px rgba(74,63,56,0.06)"; }}
-                      >
-                        <div style={{ position: "relative", height: "160px", background: "#fff" }}>
-                          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: p.accentColor }} />
-                          <Image src={p.image} alt={p.name} fill className="object-contain p-6" sizes="300px" />
-                        </div>
-                        <div style={{ padding: "16px" }}>
-                          <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#9E9087", marginBottom: "4px" }}>{p.tagline}</p>
-                          <p style={{ fontFamily: "var(--font-playfair)", fontSize: "1.1rem", fontStyle: "italic", color: "#1A1A1A", marginBottom: "6px" }}>{p.name}</p>
-                          <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "13px", fontWeight: 500, color: "#BE7865" }}>{p.priceDisplay}</p>
-                        </div>
+                    <Link key={p.id} href={`/productos/${p.id}`} className="related-card" style={{ textDecoration: "none", borderRadius: "16px", overflow: "hidden", background: "#FDFAF7", border: "1px solid rgba(187,167,150,0.2)", boxShadow: "0 4px 16px rgba(74,63,56,0.06)", display: "block", transition: "transform 0.3s, box-shadow 0.3s" }}>
+                      <div style={{ position: "relative", height: "160px", background: "#fff" }}>
+                        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: p.accentColor }} />
+                        <Image src={p.image} alt={p.name} fill className="object-contain p-6" sizes="300px" />
+                      </div>
+                      <div style={{ padding: "16px" }}>
+                        <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#9E9087", marginBottom: "4px" }}>{p.tagline}</p>
+                        <p style={{ fontFamily: "var(--font-playfair)", fontSize: "1.1rem", fontStyle: "italic", color: "#1A1A1A", marginBottom: "6px" }}>{p.name}</p>
+                        <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "13px", fontWeight: 500, color: "#BE7865" }}>{p.priceDisplay}</p>
                       </div>
                     </Link>
                   ))}
@@ -265,8 +255,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <h2 style={{ fontFamily: "var(--font-playfair)", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 400, fontStyle: "italic", color: "#1A1A1A", marginBottom: "16px" }}>
               Habla con nuestro equipo especialista
             </h2>
-            <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "13px", color: "#7A6B60", marginBottom: "28px", maxWidth: "480px", margin: "0 auto 28px" }}>
-              Te asesoramos sin compromiso. Resolvemos todas tus dudas sobre el producto, presentaciones y aplicaciones clínicas.
+            <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "13px", color: "#7A6B60", maxWidth: "480px", margin: "0 auto 28px" }}>
+              Te asesoramos sin compromiso sobre {product.name}, presentaciones disponibles y aplicaciones clínicas.
             </p>
             <a
               href={waLink(`Hola, tengo dudas sobre ${product.name}. ¿Me pueden ayudar?`)}
