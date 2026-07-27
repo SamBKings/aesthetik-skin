@@ -88,9 +88,7 @@ export default function ProductosPage() {
                 <a
                   key={cat.id}
                   href={`#${cat.id}`}
-                  style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "0.14em", textTransform: "uppercase", color: "#7A6B60", padding: "14px 20px", textDecoration: "none", whiteSpace: "nowrap", borderBottom: "2px solid transparent", display: "block", transition: "color 0.2s, border-color 0.2s" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#BE7865"; (e.currentTarget as HTMLElement).style.borderBottomColor = "#BE7865"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#7A6B60"; (e.currentTarget as HTMLElement).style.borderBottomColor = "transparent"; }}
+                  className="cat-nav-link"
                 >
                   {cat.label}
                 </a>

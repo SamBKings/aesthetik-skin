@@ -351,3 +351,19 @@ canvas { display: block; }
 
 /* ── Related card hover ─────────────────────────────────────── */
 .related-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(74,63,56,0.12) !important; }
+
+/* ── Catalog sticky nav links ───────────────────────────────── */
+.cat-nav-link {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7A6B60;
+  padding: 14px 20px;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  display: block;
+  transition: color 0.2s, border-color 0.2s;
+}
+.cat-nav-link:hover { color: #BE7865; border-bottom-color: #BE7865; }
