@@ -63,7 +63,6 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       seller: { "@type": "Organization", name: "Aesthetik Skin" },
       shippingDetails: {
         "@type": "OfferShippingDetails",
-        shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "MXN" },
         shippingDestination: { "@type": "DefinedRegion", addressCountry: "MX" },
         deliveryTime: {
           "@type": "ShippingDeliveryTime",
