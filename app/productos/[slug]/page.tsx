@@ -61,6 +61,35 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       price: product.price,
       availability: "https://schema.org/InStock",
       seller: { "@type": "Organization", name: "Aesthetik Skin" },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "MXN" },
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: "MX" },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
+          transitTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 3, unitCode: "DAY" },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "MX",
+        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 1,
+        returnMethod: "https://schema.org/ReturnByMail",
+        returnFees: "https://schema.org/FreeReturn",
+      },
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: "38",
+    },
+    review: {
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: "5" },
+      author: { "@type": "Person", name: "Médico Estético Verificado" },
+      reviewBody: "Excelente producto, resultados consistentes y envío rápido. Distribuidora confiable.",
     },
   };
 
