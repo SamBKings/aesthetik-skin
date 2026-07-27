@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { waLink } from "@/lib/products";
@@ -16,6 +16,7 @@ function buildWaMessage(items: ReturnType<typeof useCart>["items"], subtotal: nu
 
 export default function Cart() {
   const { items, count, subtotal, isOpen, closeCart, removeItem, updateQty, clearCart } = useCart();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
@@ -25,22 +26,30 @@ export default function Cart() {
   const waMsg = buildWaMessage(items, subtotal);
   const waHref = waLink(waMsg);
 
-  const handleCheckout = async () => {
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        items: items.map(i => ({
-          productId: i.product.id,
-          name: i.product.name,
-          qty: i.qty,
-          unitPrice: i.product.price,
-        })),
-      }),
-    });
-    if (!res.ok) { alert("Error al iniciar pago. Intenta de nuevo."); return; }
-    const { url } = await res.json();
-    if (url) window.location.href = url;
+  const handleMPCheckout = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/mp-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: items.map(i => ({
+            id: i.product.id,
+            title: i.product.name,
+            quantity: i.qty,
+            unitPrice: i.product.price,
+            image: i.product.image,
+          })),
+        }),
+      });
+      if (!res.ok) throw new Error();
+      const { initPoint } = await res.json();
+      if (initPoint) window.location.href = initPoint;
+    } catch {
+      alert("Error al conectar con Mercado Pago. Intenta de nuevo o contáctanos por WhatsApp.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -131,11 +140,17 @@ export default function Cart() {
               <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "12px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#7A6B60" }}>Subtotal</span>
               <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "16px", fontWeight: 600, color: "#1A1A1A" }}>{fmt(subtotal)}</span>
             </div>
-            <button onClick={handleCheckout} style={{ width: "100%", padding: "14px", marginBottom: "10px", borderRadius: "9999px", border: "none", cursor: "pointer", background: "#1A1A1A", color: "#fff", fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 500 }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#4A3F38"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#1A1A1A"; }}
+            <button
+              onClick={handleMPCheckout}
+              disabled={loading}
+              style={{ width: "100%", padding: "14px", marginBottom: "10px", borderRadius: "9999px", border: "none", cursor: loading ? "not-allowed" : "pointer", background: loading ? "#9E9087" : "#009EE3", color: "#fff", fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 500, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", transition: "background 0.2s" }}
             >
-              Pagar con tarjeta
+              {loading ? "Procesando…" : (
+                <>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.38 2C6.24 2 2 6.24 2 11.38s4.24 9.38 9.38 9.38c2.07 0 3.97-.67 5.52-1.8l3.26 3.26 1.42-1.42-3.26-3.26A9.34 9.34 0 0 0 20.76 11.38C20.76 6.24 16.52 2 11.38 2zm0 2c4.07 0 7.38 3.31 7.38 7.38s-3.31 7.38-7.38 7.38S4 15.45 4 11.38 7.31 4 11.38 4z"/></svg>
+                  Pagar con Mercado Pago
+                </>
+              )}
             </button>
             <a href={waHref} target="_blank" rel="noopener noreferrer" style={{ display: "block", width: "100%", padding: "13px", borderRadius: "9999px", border: "1px solid rgba(190,120,101,0.5)", textAlign: "center", color: "#BE7865", fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 500, textDecoration: "none" }}>
               Cotizar por WhatsApp
