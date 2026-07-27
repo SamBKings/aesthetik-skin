@@ -106,7 +106,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               <ol style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center", listStyle: "none", padding: 0, margin: 0 }}>
                 {([
                   { label: "Inicio", href: "/" },
-                  { label: "Catálogo", href: "/#products" },
+                  { label: "Catálogo", href: "/productos" },
                   { label: product.category },
                   { label: product.name },
                 ] as { label: string; href?: string }[]).map((crumb, i, arr) => (
